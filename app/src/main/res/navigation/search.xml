@@ -7,7 +7,16 @@
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.movielover.SearchFragment"
+        android:name="com.example.movielover.searchmovie.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_movieCardFragment"
+            app:destination="@id/movieCardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieCardFragment"
+        android:name="com.example.movielover.searchmovie.MovieCardFragment"
+        android:label="fragment_movie_card"
+        tools:layout="@layout/fragment_movie_card" />
 </navigation>
