@@ -1,9 +1,8 @@
-package com.example.movielover.searchmovie
+package com.example.movielover.homepage
 
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -14,12 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.movielover.R
 import com.example.movielover.databinding.CardViewDesignBinding
 import com.example.movielover.repository.dataclasses.Doc
+import com.example.movielover.searchmovie.SearchViewModel
 import com.squareup.picasso.Picasso
 
-class SearchAdapter(
+class ProfileMoviesAdapter(
     private val fragment: Fragment,
     private val viewModel: SearchViewModel
-) : RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ProfileMoviesAdapter.ViewHolder>() {
 
     var moviesList = ArrayList<Doc>()
 
@@ -64,7 +64,5 @@ class SearchAdapter(
             }
             Picasso.get().load(doc.poster.previewUrl).into(moviePoster)
         }
-
     }
-
 }

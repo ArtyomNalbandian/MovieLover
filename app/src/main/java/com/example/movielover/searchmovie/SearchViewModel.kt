@@ -1,12 +1,10 @@
 package com.example.movielover.searchmovie
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.movielover.repository.Repository
 import com.example.movielover.repository.dataclasses.Doc
-import com.example.movielover.repository.dataclasses.MovieToSearch
 
 class SearchViewModel : ViewModel() {
 
@@ -35,5 +33,9 @@ class SearchViewModel : ViewModel() {
     fun setMoreDocPostAboutFragment(post: Doc) {
         moreDocPostAboutFragment = post
     }
+    fun addToMyFavouriteList(movie: Doc) {
+        repository.addToMyFavouriteList(movie)
+    }
+
 
 }

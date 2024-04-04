@@ -44,7 +44,7 @@ class MovieCardFragment : Fragment() {
         }
 
         mBinding.addToMyFavouriteBtn.setOnClickListener {
-            //Функция добавления в список моих фильмов addToMyFavouriteList
+            viewModel.addToMyFavouriteList(currentMovie)
             Toast.makeText(context, "Фильм успешно добавлен", Toast.LENGTH_SHORT).show()
         }
     }
