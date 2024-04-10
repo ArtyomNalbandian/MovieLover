@@ -1,4 +1,4 @@
-package com.example.movielover.homepage
+package com.example.movielover.profile
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -14,7 +14,6 @@ import com.example.movielover.R
 import com.example.movielover.databinding.CardViewDesignBinding
 import com.example.movielover.repository.dataclasses.Doc
 import com.example.movielover.searchmovie.SearchViewModel
-import com.squareup.picasso.Picasso
 
 class ProfileMoviesAdapter(
     private val fragment: Fragment,
@@ -57,12 +56,12 @@ class ProfileMoviesAdapter(
         private val moviePoster = item.findViewById<ImageView>(R.id.card_view_poster)
 
         fun onBind(doc: Doc) {
-            if (doc.name.isNotEmpty()) {
+            //if (doc.name.isNotEmpty()) {
                 name.text = doc.name
-            } else {
-                name.text = doc.alternativeName
-            }
-            Picasso.get().load(doc.poster.previewUrl).into(moviePoster)
+            //} else {
+                //name.text = doc.alternativeName
+           // }
+            //Picasso.get().load(doc.poster?.previewUrl).into(moviePoster)
         }
     }
 }

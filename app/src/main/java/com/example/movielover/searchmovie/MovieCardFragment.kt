@@ -30,8 +30,8 @@ class MovieCardFragment : Fragment() {
         mBinding.textViewMovieCard.text = currentMovie.name
         mBinding.movieCardYear.text = currentMovie.year.toString()
         mBinding.movieCardDescription.text = currentMovie.description
-        mBinding.movieCardCountry.text = currentMovie.countries[0].name
-        Picasso.get().load(currentMovie.poster.previewUrl).into(mBinding.movieCardPoster)
+        mBinding.movieCardCountry.text = currentMovie.countries!![0].name
+        Picasso.get().load(currentMovie.poster?.previewUrl).into(mBinding.movieCardPoster)
 
         return mBinding.root
     }

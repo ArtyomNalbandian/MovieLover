@@ -1,10 +1,12 @@
 package com.example.movielover.searchmovie
 
 import android.util.Log
+import android.widget.EditText
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.movielover.repository.Repository
 import com.example.movielover.repository.dataclasses.Doc
+import com.google.firebase.auth.FirebaseUser
 
 class SearchViewModel : ViewModel() {
 
@@ -37,5 +39,11 @@ class SearchViewModel : ViewModel() {
         repository.addToMyFavouriteList(movie)
     }
 
+    fun downloadFavouriteMovies() {
+        repository.downloadFavouriteMovies()
+    }
 
+    fun createAccount(email: EditText, password: EditText, login: EditText) {
+        repository.createAccount(email, password, login)
+    }
 }

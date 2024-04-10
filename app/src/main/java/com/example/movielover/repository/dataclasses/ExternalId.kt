@@ -1,7 +1,7 @@
 package com.example.movielover.repository.dataclasses
 
 data class ExternalId(
-    val imdb: String,
-    val kpHD: String,
-    val tmdb: Int
+    val imdb: String?=null,
+    val kpHD: String?=null,
+    val tmdb: Int?=null
 )

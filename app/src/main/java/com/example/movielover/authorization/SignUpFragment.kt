@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.movielover.R
 import com.example.movielover.databinding.FragmentSignUpBinding
+import com.example.movielover.searchmovie.SearchViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
@@ -17,6 +19,7 @@ class SignUpFragment : Fragment() {
 
     private var _binding: FragmentSignUpBinding? = null
     private val mBinding get() = _binding!!
+    private val viewModel: SearchViewModel by activityViewModels<SearchViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +37,12 @@ class SignUpFragment : Fragment() {
             if (isFieldsEmpty()) {
                 Toast.makeText(context, "Заполните все поля!", Toast.LENGTH_SHORT).show()
             } else {
-                registerUser()
+                viewModel.createAccount(
+                    mBinding.emailSignUpET,
+                    mBinding.passwordSignUpET,
+                    mBinding.loginSignUpET)
+                Toast.makeText(context, "Пользователь успешно зарегистрирован", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
             }
         }
     }
@@ -45,7 +53,7 @@ class SignUpFragment : Fragment() {
                 mBinding.emailSignUpET.text.toString().isEmpty()
     }
 
-    private fun registerUser() {
+    /*private fun registerUser() {
 
         val email = mBinding.emailSignUpET.text.toString()
         val password = mBinding.passwordSignUpET.text.toString()
@@ -78,6 +86,6 @@ class SignUpFragment : Fragment() {
                 }
             }
 
-    }
+    }*/
 
 }

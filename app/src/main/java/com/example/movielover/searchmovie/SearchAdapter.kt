@@ -57,12 +57,12 @@ class SearchAdapter(
         private val moviePoster = item.findViewById<ImageView>(R.id.card_view_poster)
 
         fun onBind(doc: Doc) {
-            if (doc.name.isNotEmpty()) {
+            if (doc.name!!.isNotEmpty()) {
                 name.text = doc.name
             } else {
                 name.text = doc.alternativeName
             }
-            Picasso.get().load(doc.poster.previewUrl).into(moviePoster)
+            Picasso.get().load(doc.poster?.previewUrl).into(moviePoster)
         }
 
     }

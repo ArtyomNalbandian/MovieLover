@@ -6,9 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movielover.databinding.FragmentHomePageBinding
-import com.example.movielover.searchmovie.SearchAdapter
+import com.example.movielover.profile.ProfileMoviesAdapter
 import com.example.movielover.searchmovie.SearchViewModel
 
 class HomePageFragment : Fragment() {
@@ -28,6 +27,9 @@ class HomePageFragment : Fragment() {
         adapter = ProfileMoviesAdapter(this, viewModel)
         //mBinding.  .layoutManager = LinearLayoutManager(context)
         //mBinding.profileRecyclerView.adapter = adapter
+
+        //Надо будет потом на splash экран
+        viewModel.downloadFavouriteMovies()
 
         return mBinding.root
     }
