@@ -3,10 +3,14 @@ package com.example.movielover.repository
 import android.util.Log
 import android.widget.EditText
 import androidx.lifecycle.MutableLiveData
+import com.example.movielover.profile.User
 import com.example.movielover.repository.dataclasses.Doc
 import com.example.movielover.repository.dataclasses.MovieToSearch
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
@@ -68,24 +72,6 @@ class Repository {
             }
         }
     }
-
-    /*fun downloadFavouriteMoviesList() {
-        myMoviesList.clear()
-        Log.d("testLog", "--- ${database.child("Users").child("$currentUser").child("Favourite Movies")}")
-        database.child("Users").child("$currentUser").child("Favourite Movies").get().addOnSuccessListener {
-            for (myFavouriteMovie in it.children) {
-                val movieID = myFavouriteMovie.getValue(String::class.java)
-                Log.d("testLog", "+++ ${database.child("Users").child("$currentUser").child("Favourite Movies").child("$movieID")}")
-                database.child("Users").child("$currentUser").child("Favourite Movies").child("$movieID").get()
-                    .addOnSuccessListener { movie ->
-                        val moviePost = movie.getValue(Doc::class.java)
-                        myMoviesList.add(moviePost!!)
-                        favouriteMoviesListLiveData.postValue(moviesList)
-                        }
-                    }
-            }
-    }*/
-
 
     //Функция создания аккаунта
     fun createAccount(email_: EditText, password_: EditText, login_: EditText) {
@@ -226,6 +212,20 @@ class Repository {
 
     fun getActionMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
         return actionMoviesByGenreList
+    }
+
+
+    private var myUserInfo = User("")
+    fun downloadMyUserInfo(): User {
+        database.child("Users").child("$currentUser").get().addOnSuccessListener {
+            myUserInfo = it.getValue(User::class.java)!!
+            Log.d("testLog", "myUserInfo --- $myUserInfo")
+        }
+        return myUserInfo
+    }
+
+    fun getMyUserInfo(): User {
+        return myUserInfo
     }
 
 }

@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movielover.databinding.FragmentSearchBinding
+import com.google.android.material.tabs.TabLayout
 import java.util.Currency
 
 class SearchFragment : Fragment() {

@@ -18,7 +18,6 @@ class HomePageFragment : Fragment() {
     private var _binding: FragmentHomePageBinding? = null
     private val mBinding get() = _binding!!
 
-    private lateinit var runnable: Runnable
     private lateinit var handler: Handler
 
     private val viewModel: SearchViewModel by activityViewModels<SearchViewModel>()
@@ -59,9 +58,9 @@ class HomePageFragment : Fragment() {
         criminalRecyclerView.adapter = criminalMoviesAdapter
         thrillerRecyclerView.adapter = thrillerMoviesAdapter
         actionRecyclerView.adapter   = actionMoviesAdapter
-        criminalMoviesAdapter.moviesList = viewModel.getCriminalMoviesList()
-        criminalMoviesAdapter.updateData()
-        viewModel.getCriminalMoviesLiveData().observe(viewLifecycleOwner) {// если че можно вот так наговнокодить, походу проблема с апишкой а не моим кодом(((
+        //criminalMoviesAdapter.moviesList = viewModel.getCriminalMoviesList()
+        //criminalMoviesAdapter.updateData()
+        /*viewModel.getCriminalMoviesLiveData().observe(viewLifecycleOwner) {
             criminalMoviesAdapter.moviesList = viewModel.getCriminalMoviesLiveData().value!!
             criminalMoviesAdapter.updateData()
         }
@@ -72,9 +71,7 @@ class HomePageFragment : Fragment() {
         viewModel.getActionMoviesLiveData().observe(viewLifecycleOwner) {
             actionMoviesAdapter.moviesList = viewModel.getActionMoviesLiveData().value!!
             actionMoviesAdapter.updateData()
-        }
-
-        Log.d("testLog", "${viewModel.getMoviesByGenre("криминал")}")
+        }*/
 
         return mBinding.root
     }
@@ -83,7 +80,7 @@ class HomePageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         ////////////////////////////////////////////////
-        viewModel.getMoviesByGenre("криминал")  //
+       /* viewModel.getMoviesByGenre("криминал")  //
         viewModel.getMoviesByGenre("триллер")   // перенести на splash экран
         viewModel.getMoviesByGenre("боевик")    //
         ////////////////////////////////////////////////
@@ -94,7 +91,7 @@ class HomePageFragment : Fragment() {
             Handler().postDelayed({
                 mBinding.homePageSwipeRefreshLayout.isRefreshing = false
             }, 1700)
-        }
+        }*/
 
         profileMoviesAdapter.updateData()
     }

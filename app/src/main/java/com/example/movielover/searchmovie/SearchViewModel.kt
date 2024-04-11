@@ -4,6 +4,7 @@ import android.util.Log
 import android.widget.EditText
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.movielover.profile.User
 import com.example.movielover.repository.Repository
 import com.example.movielover.repository.dataclasses.Doc
 import com.google.firebase.auth.FirebaseUser
@@ -69,6 +70,14 @@ class SearchViewModel : ViewModel() {
 
     fun getActionMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
         return repository.getActionMoviesLiveData()
+    }
+
+    fun downloadMyUserInfo() {
+        repository.downloadMyUserInfo()
+    }
+
+    fun getMyUserInfo(): User {
+        return repository.getMyUserInfo()
     }
 
 }

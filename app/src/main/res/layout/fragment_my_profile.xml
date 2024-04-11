@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profileAvatar"
+        android:id="@+id/profileImage"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_marginTop="8dp"
@@ -40,7 +40,7 @@
         android:layout_marginHorizontal="16dp"
         android:background="@drawable/searchview_background"
         app:iconifiedByDefault="false"
-        app:layout_constraintTop_toBottomOf="@+id/profileAvatar"
+        app:layout_constraintTop_toBottomOf="@+id/profileImage"
         app:queryHint="Введите название фильма" />
 
     <com.google.android.material.tabs.TabLayout
