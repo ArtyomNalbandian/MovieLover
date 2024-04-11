@@ -9,5 +9,14 @@
         android:id="@+id/homePageFragment"
         android:name="com.example.movielover.homepage.HomePageFragment"
         android:label="fragment_home_page"
-        tools:layout="@layout/fragment_home_page" />
+        tools:layout="@layout/fragment_home_page" >
+        <action
+            android:id="@+id/action_homePageFragment_to_movieCardFragment2"
+            app:destination="@id/movieCardFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieCardFragment2"
+        android:name="com.example.movielover.searchmovie.MovieCardFragment"
+        android:label="fragment_movie_card"
+        tools:layout="@layout/fragment_movie_card" />
 </navigation>

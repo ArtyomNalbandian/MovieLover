@@ -26,58 +26,22 @@ class Repository {
 
     private val favouriteMoviesListLiveData: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
     private val favouriteMoviesList = ArrayList<Doc>()
-    private val favouriteMoviesID = ArrayList<String>()
-    private val myMoviesList = ArrayList<Doc>()
+
+    //Для получения списка фильмов определенного жанра
+    private var criminalMoviesByGenre = ArrayList<Doc>()
+    private var thrillerMoviesByGenre = ArrayList<Doc>()
+    private var actionMoviesByGenre = ArrayList<Doc>()
+    private val criminalMoviesByGenreList: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
+    private val thrillerMoviesByGenreList: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
+    private val actionMoviesByGenreList: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
+
 
     fun getLiveData(): MutableLiveData<ArrayList<Doc>> {
         return moviesListLiveData
     }
 
-    //Функция отправления запроса для получения массива фильмов
-    fun sendRequest(nameOfMovieToSearch: String) {
-        Log.d("testLog", "request has been sent")
-        val client = OkHttpClient()
-
-        val url = HttpUrl.parse("https://api.kinopoisk.dev/v1.4/movie/search")?.newBuilder()
-            ?.addQueryParameter("page", "1")
-            ?.addQueryParameter("limit", "10")
-            ?.addQueryParameter("query", nameOfMovieToSearch)
-            ?.build()
-
-        val request = url?.let {
-            Request.Builder()
-                .url(it)
-                .get()
-                .addHeader("accept", "application/json")
-                .addHeader("X-API-KEY", "JHWCY0W-Z8N47AE-JK5S5TK-ZJE2W2E")
-                .build()
-        }
-
-        if (request != null) {
-            client.newCall(request).enqueue(object : okhttp3.Callback {
-                override fun onFailure(call: okhttp3.Call, e: IOException) {
-                    Log.d("testLog", "fail")
-                }
-
-                override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
-                    val responseBody = response.body()?.string()
-                    val gson = Gson()
-                    val movieList = gson.fromJson(responseBody, MovieToSearch::class.java)
-                    moviesListLiveData.postValue(movieList.docs as ArrayList<Doc>?)
-                }
-            })
-        }
-    }
-
     //Функция добавления фильма в мой список
-    /*fun addToMyFavouriteList(movie: Doc) {
-        favouriteMoviesID.add(movie.id.toString())
-        favouriteMoviesListLiveData.postValue(favouriteMoviesList)
-        Log.d("testLog", "${movie.id} --- ${movie.name}")
-        Firebase.database.getReference("Users/$currentUser/Favourite Movies/${movie.id}").setValue(movie.name)
-    }*/
-
-    fun addToMyFavouriteList(movie: Doc) {
+       fun addToMyFavouriteList(movie: Doc) {
         val movieInfo = hashMapOf(
             "id" to movie.id,
             "name" to movie.name,
@@ -164,6 +128,104 @@ class Repository {
                     ).show()*/
                 }
             }
+    }
+
+    fun getFavouriteMoviesList(): ArrayList<Doc> {
+        return favouriteMoviesList
+    }
+
+    //Функция отправления запроса для получения массива фильмов
+    fun sendRequest(nameOfMovieToSearch: String) {
+        Log.d("testLog", "request has been sent")
+        val client = OkHttpClient()
+
+        val url = HttpUrl.parse("https://api.kinopoisk.dev/v1.4/movie/search")?.newBuilder()
+            ?.addQueryParameter("page", "1")
+            ?.addQueryParameter("limit", "10")
+            ?.addQueryParameter("query", nameOfMovieToSearch)
+            ?.build()
+
+        val request = url?.let {
+            Request.Builder()
+                .url(it)
+                .get()
+                .addHeader("accept", "application/json")
+                .addHeader("X-API-KEY", "JHWCY0W-Z8N47AE-JK5S5TK-ZJE2W2E")
+                .build()
+        }
+
+        if (request != null) {
+            client.newCall(request).enqueue(object : okhttp3.Callback {
+                override fun onFailure(call: okhttp3.Call, e: IOException) {
+                    Log.d("testLog", "fail")
+                }
+
+                override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                    val responseBody = response.body()?.string()
+                    val gson = Gson()
+                    val movieList = gson.fromJson(responseBody, MovieToSearch::class.java)
+                    moviesListLiveData.postValue(movieList.docs as ArrayList<Doc>?)
+                }
+            })
+        }
+    }
+
+    //Функция получения списка фильмов определенного жанра
+    fun getMoviesByGenre(genre: String) {
+        val client = OkHttpClient()
+
+        val url = HttpUrl.parse("https://api.kinopoisk.dev/v1.4/movie")?.newBuilder()
+            ?.addQueryParameter("page", "1")
+            ?.addQueryParameter("limit", "20")
+            ?.addQueryParameter("genres.name", genre) // Добавляем параметр для фильтрации по жанру
+            ?.build()
+
+        val request = url?.let {
+            Request.Builder()
+                .url(it)
+                .get()
+                .addHeader("accept", "application/json")
+                .addHeader("X-API-KEY", "JHWCY0W-Z8N47AE-JK5S5TK-ZJE2W2E")
+                .build()
+        }
+
+        if (request != null) {
+            client.newCall(request).enqueue(object : okhttp3.Callback {
+                override fun onFailure(call: okhttp3.Call, e: IOException) {
+                    Log.d("testLog", "fail")
+                }
+
+                override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                    val responseBody = response.body()?.string()
+                    val gson = Gson()
+                    val movieList = gson.fromJson(responseBody, MovieToSearch::class.java)
+                    when (genre) {
+////                        "криминал" -> criminalMoviesByGenre = (movieList.docs as ArrayList<Doc>?)!!
+////                        "триллер"  -> thrillerMoviesByGenre = (movieList.docs as ArrayList<Doc>?)!!
+////                        "боевик"   -> actionMoviesByGenre = (movieList.docs as ArrayList<Doc>?)!!
+                        "криминал" -> criminalMoviesByGenreList.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
+                        "триллер"  -> thrillerMoviesByGenreList.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
+                        "боевик"   -> actionMoviesByGenreList.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
+                    }
+                }
+            })
+        }
+    }
+
+    fun getCriminalMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
+        return criminalMoviesByGenreList
+    }
+
+    fun getCriminalMoviesList(): ArrayList<Doc> {
+        return criminalMoviesByGenre
+    }
+
+    fun getThrillerMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
+        return thrillerMoviesByGenreList
+    }
+
+    fun getActionMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
+        return actionMoviesByGenreList
     }
 
 }

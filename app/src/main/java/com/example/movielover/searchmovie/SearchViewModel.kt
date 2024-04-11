@@ -46,4 +46,29 @@ class SearchViewModel : ViewModel() {
     fun createAccount(email: EditText, password: EditText, login: EditText) {
         repository.createAccount(email, password, login)
     }
+
+    fun getFavouriteMoviesList(): ArrayList<Doc> {
+        return repository.getFavouriteMoviesList()
+    }
+
+    fun getMoviesByGenre(genre: String) {
+        repository.getMoviesByGenre(genre)
+    }
+
+    fun getCriminalMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
+        return repository.getCriminalMoviesLiveData()
+    }
+
+    fun getCriminalMoviesList(): ArrayList<Doc> {
+        return repository.getCriminalMoviesList()
+    }
+
+    fun getThrillerMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
+        return repository.getThrillerMoviesLiveData()
+    }
+
+    fun getActionMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
+        return repository.getActionMoviesLiveData()
+    }
+
 }
