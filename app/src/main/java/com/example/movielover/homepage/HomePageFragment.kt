@@ -60,7 +60,7 @@ class HomePageFragment : Fragment() {
         actionRecyclerView.adapter   = actionMoviesAdapter
         //criminalMoviesAdapter.moviesList = viewModel.getCriminalMoviesList()
         //criminalMoviesAdapter.updateData()
-        /*viewModel.getCriminalMoviesLiveData().observe(viewLifecycleOwner) {
+        viewModel.getCriminalMoviesLiveData().observe(viewLifecycleOwner) {
             criminalMoviesAdapter.moviesList = viewModel.getCriminalMoviesLiveData().value!!
             criminalMoviesAdapter.updateData()
         }
@@ -71,7 +71,7 @@ class HomePageFragment : Fragment() {
         viewModel.getActionMoviesLiveData().observe(viewLifecycleOwner) {
             actionMoviesAdapter.moviesList = viewModel.getActionMoviesLiveData().value!!
             actionMoviesAdapter.updateData()
-        }*/
+        }
 
         return mBinding.root
     }
@@ -80,7 +80,7 @@ class HomePageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         ////////////////////////////////////////////////
-       /* viewModel.getMoviesByGenre("криминал")  //
+        viewModel.getMoviesByGenre("криминал")  //
         viewModel.getMoviesByGenre("триллер")   // перенести на splash экран
         viewModel.getMoviesByGenre("боевик")    //
         ////////////////////////////////////////////////
@@ -91,7 +91,10 @@ class HomePageFragment : Fragment() {
             Handler().postDelayed({
                 mBinding.homePageSwipeRefreshLayout.isRefreshing = false
             }, 1700)
-        }*/
+        }
+
+        viewModel.downloadMyUserInfo()
+        viewModel.downloadAllUsers()
 
         profileMoviesAdapter.updateData()
     }

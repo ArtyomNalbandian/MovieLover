@@ -52,7 +52,9 @@ class MyProfileFragment : Fragment() {
         user = viewModel.getMyUserInfo()
 
         mBinding.userNameProfile.text = user.login
-        Picasso.get().load(user.profileImage).into(mBinding.profileImage)
+        if (user.profileImage != "") {
+            Picasso.get().load(user.profileImage).into(mBinding.profileImage)
+        }
 
         return mBinding.root
     }
@@ -89,7 +91,7 @@ class MyProfileFragment : Fragment() {
             storageReference.putFile(filePath)
                 .addOnSuccessListener {
                     Toast.makeText(
-                        requireContext(),
+                        context,
                         "Фото профиля обновлено",
                         Toast.LENGTH_SHORT
                     ).show()

@@ -3,7 +3,6 @@ package com.example.movielover.searchmovie
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -16,10 +15,10 @@ import com.example.movielover.databinding.CardViewDesignBinding
 import com.example.movielover.repository.dataclasses.Doc
 import com.squareup.picasso.Picasso
 
-class SearchAdapter(
+class SearchMovieAdapter(
     private val fragment: Fragment,
     private val viewModel: SearchViewModel
-) : RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<SearchMovieAdapter.ViewHolder>() {
 
     var moviesList = ArrayList<Doc>()
 

@@ -25,23 +25,32 @@ class Repository {
     private val database = Firebase.database.reference
     private val currentUser = FirebaseAuth.getInstance().uid
 
-    private val moviesListLiveData: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
-    private val moviesList = ArrayList<Doc>()
+    //Массив фильмов который получаем при поиске
+    private val searchMoviesListLiveData: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
+    private val searchMoviesList = ArrayList<Doc>()
 
-    private val favouriteMoviesListLiveData: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
+    //Получение всех пользователей кроме меня с Firebase
+    private val allUsersList = ArrayList<User>()
+    private val allUsersListLiveData: MutableLiveData<ArrayList<User>> by lazy { MutableLiveData<ArrayList<User>>() }
+
+    //private val favouriteMoviesListLiveData: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
     private val favouriteMoviesList = ArrayList<Doc>()
 
     //Для получения списка фильмов определенного жанра
     private var criminalMoviesByGenre = ArrayList<Doc>()
     private var thrillerMoviesByGenre = ArrayList<Doc>()
     private var actionMoviesByGenre = ArrayList<Doc>()
-    private val criminalMoviesByGenreList: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
-    private val thrillerMoviesByGenreList: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
-    private val actionMoviesByGenreList: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
+    private val criminalMoviesByGenreLiveData: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
+    private val thrillerMoviesByGenreLiveData: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
+    private val actionMoviesByGenreLiveData: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
 
 
-    fun getLiveData(): MutableLiveData<ArrayList<Doc>> {
-        return moviesListLiveData
+    fun getSearchMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
+        return searchMoviesListLiveData
+    }
+
+    fun getSearchMoviesList(): ArrayList<Doc> {
+        return searchMoviesList
     }
 
     //Функция добавления фильма в мой список
@@ -136,7 +145,8 @@ class Repository {
                 .url(it)
                 .get()
                 .addHeader("accept", "application/json")
-                .addHeader("X-API-KEY", "JHWCY0W-Z8N47AE-JK5S5TK-ZJE2W2E")
+                //.addHeader("X-API-KEY", "JHWCY0W-Z8N47AE-JK5S5TK-ZJE2W2E")
+                .addHeader("X-API-KEY", "9WBCW0P-4284VRY-GQMAP77-H0PJGFM")
                 .build()
         }
 
@@ -150,7 +160,8 @@ class Repository {
                     val responseBody = response.body()?.string()
                     val gson = Gson()
                     val movieList = gson.fromJson(responseBody, MovieToSearch::class.java)
-                    moviesListLiveData.postValue(movieList.docs as ArrayList<Doc>?)
+                    searchMoviesListLiveData.postValue(movieList.docs as ArrayList<Doc>?)
+                    Log.d("testLog", "movies --- ${movieList.docs}")
                 }
             })
         }
@@ -189,9 +200,9 @@ class Repository {
 ////                        "криминал" -> criminalMoviesByGenre = (movieList.docs as ArrayList<Doc>?)!!
 ////                        "триллер"  -> thrillerMoviesByGenre = (movieList.docs as ArrayList<Doc>?)!!
 ////                        "боевик"   -> actionMoviesByGenre = (movieList.docs as ArrayList<Doc>?)!!
-                        "криминал" -> criminalMoviesByGenreList.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
-                        "триллер"  -> thrillerMoviesByGenreList.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
-                        "боевик"   -> actionMoviesByGenreList.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
+                        "криминал" -> criminalMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
+                        "триллер"  -> thrillerMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
+                        "боевик"   -> actionMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
                     }
                 }
             })
@@ -199,7 +210,7 @@ class Repository {
     }
 
     fun getCriminalMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
-        return criminalMoviesByGenreList
+        return criminalMoviesByGenreLiveData
     }
 
     fun getCriminalMoviesList(): ArrayList<Doc> {
@@ -207,18 +218,24 @@ class Repository {
     }
 
     fun getThrillerMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
-        return thrillerMoviesByGenreList
+        return thrillerMoviesByGenreLiveData
     }
 
     fun getActionMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
-        return actionMoviesByGenreList
+        return actionMoviesByGenreLiveData
     }
 
 
     private var myUserInfo = User("")
     fun downloadMyUserInfo(): User {
         database.child("Users").child("$currentUser").get().addOnSuccessListener {
+            if (myUserInfo.profileImage == null) {
+                myUserInfo.profileImage = ""
+                myUserInfo.favouriteMovies = ArrayList()
+                myUserInfo.subscriptions = ArrayList()
+            }
             myUserInfo = it.getValue(User::class.java)!!
+
             Log.d("testLog", "myUserInfo --- $myUserInfo")
         }
         return myUserInfo
@@ -226,6 +243,28 @@ class Repository {
 
     fun getMyUserInfo(): User {
         return myUserInfo
+    }
+
+    fun downloadAllUsers() {
+        allUsersList.clear()
+        database.child("Users").get().addOnSuccessListener {
+            for (users in it.children) {
+                val user = users.getValue(User::class.java)
+                if (user?.uid != currentUser){
+                    allUsersList.add(user!!)
+                    allUsersListLiveData.postValue(allUsersList)
+                }
+            }
+            Log.d("testLog", "allUsersList --- ${allUsersListLiveData.value}")
+        }
+    }
+
+    fun getAllUsersList(): ArrayList<User> {
+        return allUsersList
+    }
+
+    fun getAllUsersLiveData(): MutableLiveData<ArrayList<User>> {
+        return allUsersListLiveData
     }
 
 }
