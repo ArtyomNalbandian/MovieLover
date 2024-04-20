@@ -63,6 +63,7 @@ class SearchViewModel : ViewModel() {
             }
         } else {
             if (searchTextLiveData.value != searchText) {
+                searchTextLiveData.value = searchText
                 flag = 0
                 foundUsersListLiveData.postValue(foundUsersList)
                 Log.d("testLog", "setter tab is 1 --- $searchText")
@@ -118,29 +119,6 @@ class SearchViewModel : ViewModel() {
         return repository.getAllUsersLiveData()
     }
 
-    fun getSearchMovieText(): String {
-        if (searchTextLiveData.value != null) {
-            return searchTextLiveData.value!!
-        }
-        return ""
-    }
-
-    fun setSearchMovieText(searchText: String) {
-        if (searchTextLiveData.value != searchText) {
-            searchTextLiveData.value = searchText
-            repository.sendRequest(searchText)
-        }
-        Log.d("testLog", "setSearchTextLiveData --- ${searchTextLiveData.value}")
-    }
-
-    fun setSearchUserText(searchText: String) {
-        if (searchTextLiveData.value != null) {
-            if (searchTextLiveData.value!! != searchText) {
-                searchTextLiveData.value = searchText
-            }
-        }
-    }
-
     fun getMoreDocPostAboutFragment(): Doc? {
         return moreDocPostAboutFragment
     }
@@ -169,12 +147,12 @@ class SearchViewModel : ViewModel() {
         repository.getMoviesByGenre(genre)
     }
 
-    fun getCriminalMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
-        return repository.getCriminalMoviesLiveData()
+    fun getAnimeSeriesCartoon() {
+        repository.getAnimeSeriesCartoon()
     }
 
-    fun getCriminalMoviesList(): ArrayList<Doc> {
-        return repository.getCriminalMoviesList()
+    fun getCriminalMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
+        return repository.getCriminalMoviesLiveData()
     }
 
     fun getThrillerMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
@@ -185,6 +163,30 @@ class SearchViewModel : ViewModel() {
         return repository.getActionMoviesLiveData()
     }
 
+    fun getMelodramaMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
+        return repository.getMelodramaMoviesLiveData()
+    }
+
+    fun getDramaMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
+        return repository.getDramaMoviesLiveData()
+    }
+
+    fun getFantasticMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
+        return repository.getFantasticMoviesLiveData()
+    }
+
+    fun getAnimeMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
+        return repository.getAnimeMoviesLiveData()
+    }
+
+    fun getSeriesMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
+        return repository.getSeriesMoviesLiveData()
+    }
+
+    fun getCartoonMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
+        return repository.getCartoonMoviesLiveData()
+    }
+
     fun downloadMyUserInfo() {
         repository.downloadMyUserInfo()
     }
@@ -193,29 +195,18 @@ class SearchViewModel : ViewModel() {
         return repository.getMyUserInfo()
     }
 
-    private var baseQuery: String = ""
-    fun setBaseQuery(newBaseQuery: String) {
-        if (newBaseQuery != getTestSearchText()) {
-            baseQuery = getTestSearchText()
-        } else {
-            baseQuery = newBaseQuery
-        }
-    }
-
-    fun getBaseQuery(): String {
-        return baseQuery
-    }
-
     private var isFirstInstanceMovie = true
     private var isFirstInstanceUser = true
 
     fun setIsFirstInstanceMovie() {
+        Log.d("testLog", "firstInstance --- movie")
         isFirstInstanceMovie = false
     }
     fun getIsFirstInstanceMovie(): Boolean {
         return isFirstInstanceMovie
     }
     fun setIsFirstInstanceUser() {
+        Log.d("testLog", "firstInstance --- user")
         isFirstInstanceUser = false
     }
     fun getIsFirstInstanceUser(): Boolean {

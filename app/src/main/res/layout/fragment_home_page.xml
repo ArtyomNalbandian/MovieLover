@@ -10,7 +10,8 @@
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".homepage.HomePageFragment">
+    tools:context=".homepage.HomePageFragment"
+    android:id="@+id/home_pageSV">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -33,7 +34,8 @@
             android:id="@+id/criminalTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="24sp"
+            android:textStyle="bold"
             android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
             android:text="Криминал"
@@ -44,10 +46,11 @@
             android:id="@+id/home_page_criminalRV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
             android:scrollbars="horizontal"
             app:layout_constraintStart_toStartOf="parent"
+            android:paddingEnd="26dp"
             app:layout_constraintTop_toBottomOf="@+id/criminalTV"
             tools:listitem="@layout/home_page_card_view_design" />
 
@@ -55,7 +58,8 @@
             android:id="@+id/thrillerTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="24sp"
+            android:textStyle="bold"
             android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
             android:text="Триллеры"
@@ -68,7 +72,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/thrillerTV"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
+            android:paddingEnd="26dp"
             android:layout_marginTop="16dp"
             android:scrollbars="horizontal"
             tools:listitem="@layout/home_page_card_view_design"/>
@@ -77,7 +82,8 @@
             android:id="@+id/actionTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="24sp"
+            android:textStyle="bold"
             android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
             android:text="Боевики"
@@ -90,7 +96,153 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/actionTV"
             app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="12dp"
+            android:paddingEnd="26dp"
+            android:layout_marginTop="16dp"
+            android:scrollbars="horizontal"
+            tools:listitem="@layout/home_page_card_view_design"/>
+
+        <TextView
+            android:id="@+id/melodramaTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
+            android:text="Мелодрамы"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_page_actionRV" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_page_melodramaRV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/melodramaTV"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="12dp"
+            android:paddingEnd="26dp"
+            android:layout_marginTop="16dp"
+            android:scrollbars="horizontal"
+            tools:listitem="@layout/home_page_card_view_design"/>
+
+        <TextView
+            android:id="@+id/dramaTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:text="Драмы"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_page_melodramaRV" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_page_dramaRV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/dramaTV"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="12dp"
+            android:paddingEnd="26dp"
+            android:layout_marginTop="16dp"
+            android:scrollbars="horizontal"
+            tools:listitem="@layout/home_page_card_view_design"/>
+
+        <TextView
+            android:id="@+id/fantasticTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:text="Фантастика"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_page_dramaRV" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_page_fantasticRV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/fantasticTV"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="12dp"
+            android:paddingEnd="26dp"
+            android:layout_marginTop="16dp"
+            android:scrollbars="horizontal"
+            tools:listitem="@layout/home_page_card_view_design"/>
+
+        <TextView
+            android:id="@+id/animeTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:text="Аниме"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_page_fantasticRV" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_page_animeRV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/animeTV"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="12dp"
+            android:paddingEnd="26dp"
+            android:layout_marginTop="16dp"
+            android:scrollbars="horizontal"
+            tools:listitem="@layout/home_page_card_view_design"/>
+
+        <TextView
+            android:id="@+id/seriesTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:text="Сериалы"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_page_animeRV" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_page_seriesRV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/seriesTV"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="12dp"
+            android:paddingEnd="26dp"
+            android:layout_marginTop="16dp"
+            android:scrollbars="horizontal"
+            tools:listitem="@layout/home_page_card_view_design"/>
+
+        <TextView
+            android:id="@+id/cartoonTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:text="Мультфильмы"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_page_seriesRV" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_page_cartoonRV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cartoonTV"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="12dp"
+            android:paddingEnd="26dp"
+            android:layout_marginBottom="24dp"
             android:layout_marginTop="16dp"
             android:scrollbars="horizontal"
             tools:listitem="@layout/home_page_card_view_design"/>

@@ -43,6 +43,7 @@ class SearchFragment : Fragment() {
             userAdapter.usersList = viewModel.getFoundUsersLiveData().value!!
             userAdapter.updateData()
         }
+
         mBinding.searchTabs.getTabAt(viewModel.getTabPosition())!!.select()
         if (viewModel.getTabPosition() == 0) {
             searchMovie(viewModel.getTabPosition())
