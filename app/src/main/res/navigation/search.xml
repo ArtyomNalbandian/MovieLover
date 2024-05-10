@@ -7,16 +7,24 @@
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.movielover.searchmovie.SearchFragment"
+        android:name="com.example.movielover.view.searchmovie.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_searchFragment_to_movieCardFragment"
             app:destination="@id/movieCardFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/movieCardFragment"
-        android:name="com.example.movielover.searchmovie.MovieCardFragment"
+        android:name="com.example.movielover.view.searchmovie.MovieCardFragment"
         android:label="fragment_movie_card"
         tools:layout="@layout/fragment_movie_card" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.movielover.view.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

@@ -10,13 +10,13 @@
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".homepage.HomePageFragment"
+    tools:context=".view.homepage.HomePageFragment"
     android:id="@+id/home_pageSV">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".homepage.HomePageFragment">
+        tools:context=".view.homepage.HomePageFragment">
 
         <TextView
             android:id="@+id/home_pageTV"

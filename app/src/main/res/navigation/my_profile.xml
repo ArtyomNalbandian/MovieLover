@@ -7,7 +7,24 @@
 
     <fragment
         android:id="@+id/myProfileFragment"
-        android:name="com.example.movielover.profile.MyProfileFragment"
+        android:name="com.example.movielover.view.profile.MyProfileFragment"
         android:label="fragment_my_profile"
-        tools:layout="@layout/fragment_my_profile" />
+        tools:layout="@layout/fragment_my_profile" >
+        <action
+            android:id="@+id/action_myProfileFragment_to_movieCardFragment3"
+            app:destination="@id/movieCardFragment3" />
+        <action
+            android:id="@+id/action_myProfileFragment_to_profileFragment2"
+            app:destination="@id/profileFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieCardFragment3"
+        android:name="com.example.movielover.view.searchmovie.MovieCardFragment"
+        android:label="fragment_movie_card"
+        tools:layout="@layout/fragment_movie_card" />
+    <fragment
+        android:id="@+id/profileFragment2"
+        android:name="com.example.movielover.view.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

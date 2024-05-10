@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/search_fragment"
-    tools:context=".searchmovie.SearchFragment">
+    tools:context=".view.searchmovie.SearchFragment">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
@@ -55,6 +55,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_tabs"
         tools:listitem="@layout/card_view_design"
-        android:layout_marginBottom="64dp"/>
+        android:layout_marginBottom="64dp"
+        android:paddingBottom="140dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
