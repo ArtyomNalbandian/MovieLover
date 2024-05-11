@@ -52,12 +52,20 @@ class ProfileUsersAdapter (
 
         private val name = item.findViewById<TextView>(R.id.card_view_name)
         private val profileImage = item.findViewById<ImageView>(R.id.card_view_poster)
+        private val year = item.findViewById<TextView>(R.id.card_view_year_)
+        private val country = item.findViewById<TextView>(R.id.card_view_country_)
+        private val year_ = item.findViewById<TextView>(R.id.card_view_year)
+        private val country_ = item.findViewById<TextView>(R.id.card_view_country)
 
         fun onBind(user: User) {
             name.text = user.login
             if (user.profileImage?.isNotEmpty() == true) {
                 Picasso.get().load(user.profileImage).into(profileImage)
             }
+            year.text = ""
+            country.text = ""
+            year_.visibility = View.GONE
+            country_.visibility = View.GONE
         }
 
     }

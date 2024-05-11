@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -36,6 +37,11 @@ class ProfileMoviesAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = moviesList[position]
         holder.onBind(currentItem)
+        holder.mBinding.deleteBtn.setOnClickListener {
+            viewModel.deleteMovieFromFavourite(currentItem)
+            moviesList.removeAt(position)
+            Toast.makeText(fragment.requireContext(), "Фильм успешно удален", Toast.LENGTH_SHORT).show()
+        }
         holder.mBinding.movieCardLayout.setOnClickListener {
             viewModel.setMoreDocPostAboutFragment(moviesList[position])
             Log.d("testLog", "this is adapter --- ${viewModel.getMoreDocPostAboutFragment()}")
@@ -57,6 +63,7 @@ class ProfileMoviesAdapter(
         private val country = item.findViewById<TextView>(R.id.card_view_country)
         private val year = item.findViewById<TextView>(R.id.card_view_year)
         private val moviePoster = item.findViewById<ImageView>(R.id.card_view_poster)
+        private val deleteBtn = item.findViewById<ImageView>(R.id.deleteBtn)
 
         fun onBind(doc: Doc) {
             if (doc.name != null) {
@@ -65,6 +72,8 @@ class ProfileMoviesAdapter(
             country.text = doc.country
             year.text = doc.year.toString()
             Picasso.get().load(doc.poster?.url).into(moviePoster)
+
+            deleteBtn.visibility = View.VISIBLE
         }
     }
 }

@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movielover.databinding.FragmentMyProfileBinding
 import com.example.movielover.viewModel.SearchViewModel
+import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -27,7 +29,8 @@ class MyProfileFragment : Fragment() {
     private val mBinding get() = _binding!!
 
     private val viewModel: SearchViewModel by activityViewModels<SearchViewModel>()
-    private lateinit var adapter: ProfileMoviesAdapter
+    private lateinit var moviesAdapter: ProfileMoviesAdapter
+    private lateinit var usersAdapter: ProfileUsersAdapter
 
     /////////////////////////////
     private var filePath: Uri? = null
@@ -40,13 +43,38 @@ class MyProfileFragment : Fragment() {
     ): View {
         _binding = FragmentMyProfileBinding.inflate(inflater, container, false)
 
-        adapter = ProfileMoviesAdapter(this, viewModel)
+        moviesAdapter = ProfileMoviesAdapter(this, viewModel)
+        usersAdapter = ProfileUsersAdapter(this, viewModel)
         mBinding.profileRecyclerView.layoutManager = LinearLayoutManager(context)
-        mBinding.profileRecyclerView.adapter = adapter
+        mBinding.profileRecyclerView.adapter = moviesAdapter
 
 
-        adapter.moviesList = viewModel.getFavouriteMoviesList()// переделать на LiveData
-        adapter.updateData()
+        moviesAdapter.moviesList = viewModel.getFavouriteMoviesList()// переделать на LiveData
+        moviesAdapter.updateData()
+
+        viewModel.getMyFavouriteMoviesLiveData().observe(viewLifecycleOwner) {
+            moviesAdapter.moviesList = viewModel.getMyFavouriteMoviesLiveData().value!!
+            moviesAdapter.updateData()
+        }
+
+        usersAdapter.usersList = viewModel.getMySubsList()
+        usersAdapter.updateData()
+
+        mBinding.profileTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(p0: TabLayout.Tab?) {
+                when (p0?.position) {
+                    0 -> {
+                        mBinding.profileRecyclerView.adapter = moviesAdapter
+                    }
+
+                    1 -> {
+                        mBinding.profileRecyclerView.adapter = usersAdapter
+                    }
+                }
+            }
+            override fun onTabUnselected(p0: TabLayout.Tab?) {}
+            override fun onTabReselected(p0: TabLayout.Tab?) {}
+        })
 
         viewModel.downloadMyUserInfo()
         user = viewModel.getMyUserInfo()

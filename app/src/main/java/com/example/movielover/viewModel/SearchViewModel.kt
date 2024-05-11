@@ -5,7 +5,7 @@ import android.widget.EditText
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.movielover.view.profile.User
-import com.example.movielover.model.Repository
+import com.example.movielover.model.repository.Repository
 import com.example.movielover.model.dataclasses.Doc
 
 class SearchViewModel : ViewModel() {
@@ -220,5 +220,29 @@ class SearchViewModel : ViewModel() {
     }
     fun getIsFirstInstanceUser(): Boolean {
         return isFirstInstanceUser
+    }
+
+    fun subscribeToUser(user: User) {
+        repository.subscribeToUser(user)
+    }
+
+    fun getMySubscriptions() {
+        repository.getMySubscriptions()
+    }
+
+    fun getMySubsList(): ArrayList<User> {
+        return repository.getMySubsList()
+    }
+
+    fun getMySubsListLiveData(): MutableLiveData<ArrayList<User>> {
+        return repository.getMySubsListLiveData()
+    }
+
+    fun unsubscribeFromUser(user: User) {
+        repository.unsubscribeFromUser(user)
+    }
+
+    fun deleteMovieFromFavourite(movie: Doc) {
+        repository.deleteMovieFromFavourite(movie)
     }
 }

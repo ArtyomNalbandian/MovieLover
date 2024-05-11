@@ -1,4 +1,4 @@
-package com.example.movielover.model
+package com.example.movielover.model.repository
 
 import android.util.Log
 import android.widget.EditText
@@ -14,6 +14,8 @@ import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
 
 
 class Repository {
@@ -33,6 +35,11 @@ class Repository {
     private val favouriteMoviesList = ArrayList<Doc>()
     private val myFavouriteMoviesListLiveData: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
     private val myFavouriteMoviesList = ArrayList<Doc>()
+
+    //Мои подписки
+    private val mySubsList = ArrayList<User>()
+    private val mySubsLiveData: MutableLiveData<ArrayList<User>> by lazy { MutableLiveData<ArrayList<User>>() }
+
 
     //Для получения списка фильмов определенного жанра
     private val criminalMoviesByGenreLiveData: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
@@ -362,6 +369,41 @@ class Repository {
 
     fun getAllUsersLiveData(): MutableLiveData<ArrayList<User>> {
         return allUsersListLiveData
+    }
+
+    //Subscription logic
+    fun subscribeToUser(user: User) {
+        Firebase.database.getReference("Users/$currentUser/Subscriptions/${user.uid}").setValue(user)
+    }
+
+    fun getMySubscriptions() {
+        mySubsList.clear()
+        database.child("Users").child("$currentUser").child("Subscriptions").get().addOnSuccessListener {
+            for (users in it.children) {
+                val user = users.getValue(User::class.java)
+                mySubsList.add(0, user!!)
+                mySubsLiveData.postValue(mySubsList)
+            }
+            Log.d("testLog", "subs --- $mySubsList")
+        }
+    }
+
+    fun unsubscribeFromUser(user: User) {
+        Firebase.database.getReference("Users/$currentUser/Subscriptions/${user.uid}").removeValue()
+    }
+
+    fun getMySubsList(): ArrayList<User> {
+        Log.d("testLog", "mySubsList --- $mySubsList")
+        return mySubsList
+    }
+
+    fun getMySubsListLiveData(): MutableLiveData<ArrayList<User>> {
+        Log.d("testLog", "mySubsListLiveData --- ${mySubsLiveData.value}")
+        return mySubsLiveData
+    }
+
+    fun deleteMovieFromFavourite(movie: Doc) {
+        Firebase.database.getReference("Favourite Movies/$currentUser/${movie.id}").removeValue()
     }
 
 }

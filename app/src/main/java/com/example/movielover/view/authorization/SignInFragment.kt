@@ -34,6 +34,8 @@ class SignInFragment : Fragment() {
         viewModel.getMoviesByGenre("фантастика") //
         viewModel.getAnimeSeriesCartoon()              //
 
+        viewModel.getMySubscriptions()
+
         return mBinding.root
     }
 
