@@ -22,6 +22,7 @@ class SearchFragment : Fragment() {
     private val viewModel: SearchViewModel by activityViewModels<SearchViewModel>()
     private lateinit var movieAdapter: SearchMovieAdapter
     private lateinit var userAdapter: SearchUserAdapter
+    private lateinit var currentUser: User
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +30,7 @@ class SearchFragment : Fragment() {
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
 
+        currentUser = viewModel.getMyUserInfo()
         movieAdapter = SearchMovieAdapter(this, viewModel)
         userAdapter = SearchUserAdapter(this, viewModel)
         mBinding.recyclerView.layoutManager = LinearLayoutManager(context)
@@ -52,6 +54,11 @@ class SearchFragment : Fragment() {
         } else {
             searchUsers(viewModel.getTabPosition())
             mBinding.recyclerView.adapter = userAdapter
+        }
+
+        if (currentUser.email == null) {
+            mBinding.searchTabs.visibility = View.GONE
+            mBinding.recyclerView.setPadding(0, 0, 0, 200)
         }
 
         mBinding.searchTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {

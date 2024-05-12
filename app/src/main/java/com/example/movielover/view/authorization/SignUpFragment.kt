@@ -1,6 +1,7 @@
 package com.example.movielover.view.authorization
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +43,15 @@ class SignUpFragment : Fragment() {
                 findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
             }
         }
+
+        mBinding.showPassword.setOnClickListener {
+            if (mBinding.passwordSignUpET.inputType == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+                mBinding.passwordSignUpET.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            } else {
+                mBinding.passwordSignUpET.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            }
+            mBinding.passwordSignUpET.setSelection(mBinding.passwordSignUpET.text.length)
+        }
     }
 
     private fun isFieldsEmpty(): Boolean {
@@ -49,40 +59,5 @@ class SignUpFragment : Fragment() {
                 mBinding.passwordSignUpET.text.toString().isEmpty() ||
                 mBinding.emailSignUpET.text.toString().isEmpty()
     }
-
-    /*private fun registerUser() {
-
-        val email = mBinding.emailSignUpET.text.toString()
-        val password = mBinding.passwordSignUpET.text.toString()
-        val login = mBinding.loginSignUpET.text.toString()
-
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val currentUser = FirebaseAuth.getInstance().currentUser
-                    currentUser?.let { user ->
-                        val userInfo = hashMapOf(
-                            "uid" to user.uid,
-                            "email" to email,
-                            "login" to login,
-                            "profileImage" to ""
-                        )
-
-                        FirebaseDatabase.getInstance().reference.child("Users").child(user.uid)
-                            .setValue(userInfo)
-                            .addOnCompleteListener { databaseTask ->
-                                if (databaseTask.isSuccessful) {
-                                    findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
-                                } else {
-                                    Toast.makeText(context, "Ошибка при регистрации пользователя", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                    }
-                } else {
-                    Toast.makeText(context, "Ошибка при регистрации пользователя", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-    }*/
 
 }

@@ -1,5 +1,6 @@
 package com.example.movielover.viewModel
 
+import android.net.Uri
 import android.util.Log
 import android.widget.EditText
 import androidx.lifecycle.MutableLiveData
@@ -132,8 +133,8 @@ class SearchViewModel : ViewModel() {
         return repository.getFavouriteMoviesList()
     }
 
-    fun downloadMyFavouriteMovies(user: User) {
-        repository.downloadMyFavouriteMovies(user)
+    fun downloadProfileFavouriteMovies(user: User) {
+        repository.downloadProfileFavouriteMovies(user)
     }
 
     fun getMyFavouriteMoviesList(): ArrayList<Doc> {
@@ -244,5 +245,9 @@ class SearchViewModel : ViewModel() {
 
     fun deleteMovieFromFavourite(movie: Doc) {
         repository.deleteMovieFromFavourite(movie)
+    }
+
+    fun uploadImage(filePath: Uri?) {
+        repository.uploadImage(filePath)
     }
 }

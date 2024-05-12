@@ -49,7 +49,7 @@ class MyProfileFragment : Fragment() {
         mBinding.profileRecyclerView.adapter = moviesAdapter
 
 
-        moviesAdapter.moviesList = viewModel.getFavouriteMoviesList()// переделать на LiveData
+        moviesAdapter.moviesList = viewModel.getMyFavouriteMoviesList()
         moviesAdapter.updateData()
 
         viewModel.getMyFavouriteMoviesLiveData().observe(viewLifecycleOwner) {
@@ -59,6 +59,14 @@ class MyProfileFragment : Fragment() {
 
         usersAdapter.usersList = viewModel.getMySubsList()
         usersAdapter.updateData()
+
+        viewModel.downloadMyUserInfo()
+        user = viewModel.getMyUserInfo()
+
+        if (user.email == null) {
+            mBinding.profileTabs.visibility = View.GONE
+            mBinding.profileRecyclerView.setPadding(0, 0, 0, 800)
+        }
 
         mBinding.profileTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(p0: TabLayout.Tab?) {
@@ -75,9 +83,6 @@ class MyProfileFragment : Fragment() {
             override fun onTabUnselected(p0: TabLayout.Tab?) {}
             override fun onTabReselected(p0: TabLayout.Tab?) {}
         })
-
-        viewModel.downloadMyUserInfo()
-        user = viewModel.getMyUserInfo()
 
         mBinding.userNameProfile.text = user.login
         if (user.profileImage != "") {
@@ -100,7 +105,8 @@ class MyProfileFragment : Fragment() {
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-                uploadImage()
+                viewModel.uploadImage(filePath)
+                Toast.makeText(context, "Фото профиля обновлено!", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -111,26 +117,6 @@ class MyProfileFragment : Fragment() {
         pickImageActivityResultLauncher.launch(intent)
     }
 
-    private fun uploadImage() {
-        filePath?.let { filePath ->
-            val uid = FirebaseAuth.getInstance().currentUser?.uid
-            val storageReference = FirebaseStorage.getInstance().getReference("images/$uid")
-
-            storageReference.putFile(filePath)
-                .addOnSuccessListener {
-                    Toast.makeText(
-                        context,
-                        "Фото профиля обновлено",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    storageReference.downloadUrl.addOnSuccessListener { uri ->
-                        FirebaseDatabase.getInstance().getReference("Users").child(uid!!)
-                            .child("profileImage").setValue(uri.toString())
-                    }
-                }
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -1,6 +1,7 @@
 package com.example.movielover.view.authorization
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,16 +56,23 @@ class SignInFragment : Fragment() {
             }
         }
 
+        mBinding.showPassword.setOnClickListener {
+            if (mBinding.passwordSignInED.inputType == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+                mBinding.passwordSignInED.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            } else {
+                mBinding.passwordSignInED.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            }
+            mBinding.passwordSignInED.setSelection(mBinding.passwordSignInED.text.length)
+        }
+
+        mBinding.signInAsGuestBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_signInFragment_to_mainFragment)
+        }
+
         mBinding.signInTV.setOnClickListener {
             findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            findNavController().navigate(R.id.action_signInFragment_to_mainFragment)
-        }
-    }
 
 }

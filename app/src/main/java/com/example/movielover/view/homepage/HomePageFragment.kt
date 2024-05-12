@@ -88,45 +88,45 @@ class HomePageFragment : Fragment() {
         cartoonRecyclerView.adapter   = cartoonMoviesAdapter
 
         viewModel.getCriminalMoviesLiveData().observe(viewLifecycleOwner) {
-            criminalMoviesAdapter.moviesList = viewModel.getCriminalMoviesLiveData().value!!
+//            criminalMoviesAdapter.moviesList = viewModel.getCriminalMoviesLiveData().value!!
             criminalMoviesAdapter.updateData()
         }
         viewModel.getThrillerMoviesLiveData().observe(viewLifecycleOwner) {
-            thrillerMoviesAdapter.moviesList = viewModel.getThrillerMoviesLiveData().value!!
+//            thrillerMoviesAdapter.moviesList = viewModel.getThrillerMoviesLiveData().value!!
             thrillerMoviesAdapter.updateData()
         }
         viewModel.getActionMoviesLiveData().observe(viewLifecycleOwner) {
-            actionMoviesAdapter.moviesList = viewModel.getActionMoviesLiveData().value!!
+//            actionMoviesAdapter.moviesList = viewModel.getActionMoviesLiveData().value!!
             actionMoviesAdapter.updateData()
         }
 
         viewModel.getMelodramaMoviesLiveData().observe(viewLifecycleOwner) {
-            melodramaMoviesAdapter.moviesList = viewModel.getMelodramaMoviesLiveData().value!!
+//            melodramaMoviesAdapter.moviesList = viewModel.getMelodramaMoviesLiveData().value!!
             melodramaMoviesAdapter.updateData()
         }
 
         viewModel.getDramaMoviesLiveData().observe(viewLifecycleOwner) {
-            dramaMoviesAdapter.moviesList = viewModel.getDramaMoviesLiveData().value!!
+//            dramaMoviesAdapter.moviesList = viewModel.getDramaMoviesLiveData().value!!
             dramaMoviesAdapter.updateData()
         }
 
         viewModel.getFantasticMoviesLiveData().observe(viewLifecycleOwner) {
-            fantasticMoviesAdapter.moviesList = viewModel.getFantasticMoviesLiveData().value!!
+//            fantasticMoviesAdapter.moviesList = viewModel.getFantasticMoviesLiveData().value!!
             fantasticMoviesAdapter.updateData()
         }
 
         viewModel.getAnimeMoviesLiveData().observe(viewLifecycleOwner) {
-            animeMoviesAdapter.moviesList = viewModel.getAnimeMoviesLiveData().value!!
+//            animeMoviesAdapter.moviesList = viewModel.getAnimeMoviesLiveData().value!!
             animeMoviesAdapter.updateData()
         }
 
         viewModel.getSeriesMoviesLiveData().observe(viewLifecycleOwner) {
-            seriesMoviesAdapter.moviesList = viewModel.getSeriesMoviesLiveData().value!!
+//            seriesMoviesAdapter.moviesList = viewModel.getSeriesMoviesLiveData().value!!
             seriesMoviesAdapter.updateData()
         }
 
         viewModel.getCartoonMoviesLiveData().observe(viewLifecycleOwner) {
-            cartoonMoviesAdapter.moviesList = viewModel.getCartoonMoviesLiveData().value!!
+//            cartoonMoviesAdapter.moviesList = viewModel.getCartoonMoviesLiveData().value!!
             cartoonMoviesAdapter.updateData()
         }
 

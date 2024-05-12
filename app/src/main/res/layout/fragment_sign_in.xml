@@ -31,10 +31,21 @@
         android:layout_marginTop="32dp"
         android:layout_marginRight="16dp"
         android:hint="Почта"
+        android:inputType="textPassword"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView" />
+
+    <ImageView
+        android:id="@+id/showPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_show"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/passwordSignInED"
+        app:layout_constraintEnd_toEndOf="@+id/passwordSignInED"
+        app:layout_constraintTop_toTopOf="@+id/passwordSignInED" />
 
     <EditText
         android:id="@+id/passwordSignInED"
@@ -77,5 +88,20 @@
         android:text="Нет аккаунта? Зарегистрироваться"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signInBtn" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signInAsGuestBtn"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#EDEDED"
+        android:text="Войти как гость"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:cornerRadius="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signInTV" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,7 +46,7 @@ class ProfileFragment : Fragment() {
 //        currentUser = viewModel.getUserInfo()
 //        Log.d("testLog", "user - ${viewModel.getUserInfo()}")
 
-        viewModel.downloadMyFavouriteMovies(currentUser)
+        viewModel.downloadProfileFavouriteMovies(currentUser)
         movieAdapter.moviesList = viewModel.getMyFavouriteMoviesList()
         movieAdapter.updateData()
         viewModel.getMyFavouriteMoviesLiveData().observe(viewLifecycleOwner) {

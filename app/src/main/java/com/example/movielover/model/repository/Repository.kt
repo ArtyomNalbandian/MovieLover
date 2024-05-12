@@ -1,5 +1,6 @@
 package com.example.movielover.model.repository
 
+import android.net.Uri
 import android.util.Log
 import android.widget.EditText
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -32,9 +34,10 @@ class Repository {
     private val allUsersListLiveData: MutableLiveData<ArrayList<User>> by lazy { MutableLiveData<ArrayList<User>>() }
 
     //private val favouriteMoviesListLiveData: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
-    private val favouriteMoviesList = ArrayList<Doc>()
-    private val myFavouriteMoviesListLiveData: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
     private val myFavouriteMoviesList = ArrayList<Doc>()
+    private val myFavouriteMoviesListLiveData: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
+    private val profileFavouriteMoviesListLiveData: MutableLiveData<ArrayList<Doc>> by lazy { MutableLiveData<ArrayList<Doc>>() }
+    private val profileFavouriteMoviesList = ArrayList<Doc>()
 
     //Мои подписки
     private val mySubsList = ArrayList<User>()
@@ -62,7 +65,7 @@ class Repository {
 
     //Функция добавления фильма в мой список
        fun addToMyFavouriteList(movie: Doc) {
-        val movieInfo = hashMapOf(
+           val movieInfo = hashMapOf(
             "id" to movie.id,
             "name" to movie.name,
             "poster" to movie.poster,
@@ -70,35 +73,35 @@ class Repository {
             "year" to movie.year,
             "country" to movie.countries?.get(0)?.name
         )
-        //database.child("Users/$currentUser/Favourite Movies/${movie.id}").setValue(movieInfo)
         database.child("Favourite Movies/$currentUser/${movie.id}").setValue(movieInfo)
-
+        myFavouriteMoviesList.add(movie)
+        myFavouriteMoviesListLiveData.postValue(myFavouriteMoviesList)
     }
 
     fun downloadFavouriteMovies() {
         database.child("Favourite Movies").child("$currentUser").get().addOnSuccessListener {
-        //database.child("Users/$currentUser/Favourite Movies").get().addOnSuccessListener {
-            favouriteMoviesList.clear()
+            myFavouriteMoviesList.clear()
             if (it.exists()) {
                 for (movies in it.children) {
                     Log.d("testLog", "for --- $movies")
                     val movie = movies.getValue(Doc::class.java)
-                    favouriteMoviesList.add(movie!!)
+                    myFavouriteMoviesList.add(movie!!)
+                    myFavouriteMoviesListLiveData.postValue(myFavouriteMoviesList)
                     Log.d("testLog", "movie --- $movie")
                 }
             }
         }
     }
 
-    fun downloadMyFavouriteMovies(user: User) {
+    fun downloadProfileFavouriteMovies(user: User) {
         database.child("Favourite Movies").child("${user.uid}").get().addOnSuccessListener {
-            myFavouriteMoviesList.clear()
+            profileFavouriteMoviesList.clear()
             if (it.exists()) {
                 for (movies in it.children) {
                     val movie = movies.getValue(Doc::class.java)
-                    myFavouriteMoviesList.add(movie!!)
+                    profileFavouriteMoviesList.add(movie!!)
                 }
-                myFavouriteMoviesListLiveData.postValue(myFavouriteMoviesList)
+                profileFavouriteMoviesListLiveData.postValue(profileFavouriteMoviesList)
             }
         }
     }
@@ -108,7 +111,7 @@ class Repository {
     }
 
     fun getFavouriteMoviesList(): ArrayList<Doc> {
-        return favouriteMoviesList
+        return profileFavouriteMoviesList
     }
 
     fun getMyFavouriteMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
@@ -135,17 +138,17 @@ class Repository {
 
                         FirebaseDatabase.getInstance().reference.child("Users").child(user.uid)
                             .setValue(userInfo)
-                            //.addOnCompleteListener { databaseTask ->
-                                /*if (databaseTask.isSuccessful) {
-                                    findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
+                            .addOnCompleteListener { databaseTask ->
+                                if (databaseTask.isSuccessful) {
+//                                    findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
                                 } else {
-                                    Toast.makeText(
-                                        context,
-                                        "Ошибка при регистрации пользователя",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+//                                    Toast.makeText(
+//                                        context,
+//                                        "Ошибка при регистрации пользователя",
+//                                        Toast.LENGTH_SHORT
+//                                    ).show()
                                 }
-                            }*/
+                            }
                     }
                 } else {
                     Log.d("testLog", "else scope --- ")
@@ -320,12 +323,16 @@ class Repository {
     private var myUserInfo = User("")
     fun downloadMyUserInfo(): User {
         database.child("Users").child("$currentUser").get().addOnSuccessListener {
-            Log.d("testLog", "it --- ${it.getValue(User::class.java)}")
-            if (myUserInfo.profileImage == null) {
-                myUserInfo.profileImage = ""
-            }
-            myUserInfo = it.getValue(User::class.java)!!
+            if (it.value == null) {
+                myUserInfo.login = "guest"
+            } else {
+                Log.d("testLog", "it --- ${it.getValue(User::class.java)}")
+                if (myUserInfo.profileImage == null) {
+                    myUserInfo.profileImage = ""
+                }
 
+                myUserInfo = it.getValue(User::class.java)!!
+            }
             Log.d("testLog", "myUserInfo --- $myUserInfo")
         }
         return myUserInfo
@@ -356,6 +363,20 @@ class Repository {
                 }
             }
             Log.d("testLog", "allUsersList --- ${allUsersListLiveData.value}")
+        }
+    }
+
+    fun uploadImage(filePath: Uri?) {
+        filePath?.let {
+            val uid = currentUser
+            val storageReference = FirebaseStorage.getInstance().getReference("images/$uid")
+            storageReference.putFile(filePath)
+                .addOnSuccessListener {
+                    storageReference.downloadUrl.addOnSuccessListener { uri ->
+                        FirebaseDatabase.getInstance().getReference("Users").child(uid!!)
+                            .child("profileImage").setValue(uri.toString())
+                    }
+                }
         }
     }
 
