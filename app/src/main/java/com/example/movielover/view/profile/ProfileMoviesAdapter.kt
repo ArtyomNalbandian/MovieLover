@@ -39,10 +39,9 @@ class ProfileMoviesAdapter(
         holder.onBind(currentItem)
         holder.mBinding.deleteBtn.setOnClickListener {
             viewModel.deleteMovieFromFavourite(currentItem)
-            val removedPosition = position
-            moviesList.removeAt(removedPosition)
-            notifyItemRemoved(removedPosition)
-            notifyItemRangeChanged(removedPosition, moviesList.size)
+            moviesList.removeAt(position)
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position, moviesList.size)
             Toast.makeText(fragment.requireContext(), "Фильм успешно удален", Toast.LENGTH_SHORT).show()
         }
         holder.mBinding.movieCardLayout.setOnClickListener {

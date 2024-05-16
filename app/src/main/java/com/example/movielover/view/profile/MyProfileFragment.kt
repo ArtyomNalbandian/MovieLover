@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.movielover.R
 import com.example.movielover.databinding.FragmentMyProfileBinding
 import com.example.movielover.viewModel.SearchViewModel
 import com.google.android.material.tabs.TabLayout
@@ -55,6 +56,11 @@ class MyProfileFragment : Fragment() {
         viewModel.getMyFavouriteMoviesLiveData().observe(viewLifecycleOwner) {
             moviesAdapter.moviesList = viewModel.getMyFavouriteMoviesLiveData().value!!
             moviesAdapter.updateData()
+        }
+
+        viewModel.getMySubsListLiveData().observe(viewLifecycleOwner) {
+            usersAdapter.usersList = viewModel.getMySubsListLiveData().value!!
+            usersAdapter.updateData()
         }
 
         usersAdapter.usersList = viewModel.getMySubsList()

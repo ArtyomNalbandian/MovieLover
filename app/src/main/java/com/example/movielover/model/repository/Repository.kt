@@ -120,9 +120,9 @@ class Repository {
 
     //Функция создания аккаунта
     fun createAccount(email_: EditText, password_: EditText, login_: EditText) {
-        val email = email_.text.toString()
-        val login = login_.text.toString()
-        val password = password_.text.toString()
+        val email = email_.text.toString().trim()
+        val login = login_.text.toString().trim()
+        val password = password_.text.toString().trim()
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -324,8 +324,10 @@ class Repository {
     fun downloadMyUserInfo(): User {
         database.child("Users").child("$currentUser").get().addOnSuccessListener {
             if (it.value == null) {
+                Log.d("testLog", "it --- ${it.value}")
                 myUserInfo.login = "guest"
             } else {
+                database.child("Favourite Movies").child("null").removeValue()
                 Log.d("testLog", "it --- ${it.getValue(User::class.java)}")
                 if (myUserInfo.profileImage == null) {
                     myUserInfo.profileImage = ""
@@ -411,6 +413,8 @@ class Repository {
 
     fun unsubscribeFromUser(user: User) {
         Firebase.database.getReference("Users/$currentUser/Subscriptions/${user.uid}").removeValue()
+        mySubsList.remove(user)
+        mySubsLiveData.postValue(mySubsList)
     }
 
     fun getMySubsList(): ArrayList<User> {
@@ -425,6 +429,8 @@ class Repository {
 
     fun deleteMovieFromFavourite(movie: Doc) {
         Firebase.database.getReference("Favourite Movies/$currentUser/${movie.id}").removeValue()
+        myFavouriteMoviesList.remove(movie)
+        myFavouriteMoviesListLiveData.postValue(myFavouriteMoviesList)
     }
 
 }

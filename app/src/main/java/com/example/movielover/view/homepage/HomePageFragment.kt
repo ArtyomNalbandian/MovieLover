@@ -149,18 +149,12 @@ class HomePageFragment : Fragment() {
             }, 1700)
         }
 
-        //////////////////////////////////////////////////////////////////////
-        //ЗАГРУЗКА ЛЮБИМЫХ ФИЛЬМОВ ДЛЯ ЭКРАНА ПРОФИЛЯ                       //
-        profileMoviesAdapter = ProfileMoviesAdapter(this, viewModel)//
-        //Надо будет потом на splash экран                                  //
-        viewModel.downloadFavouriteMovies()                                 //
-        //////////////////////////////////////////////////////////////////////
+        profileMoviesAdapter = ProfileMoviesAdapter(this, viewModel)
+        viewModel.downloadFavouriteMovies()
 
-        //ЗАГРУЗКА ДАННЫХ ДЛЯ ФРАГМЕНТА ПРОФИЛЯ
         viewModel.downloadMyUserInfo()
         viewModel.downloadAllUsers()
         profileMoviesAdapter.updateData()
-        /////////////////////////////////////////////////
         sharedPreferences = requireActivity().getSharedPreferences("scroll_prefs", Context.MODE_PRIVATE)
 
     }

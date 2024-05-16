@@ -35,8 +35,6 @@ class SearchFragment : Fragment() {
         userAdapter = SearchUserAdapter(this, viewModel)
         mBinding.recyclerView.layoutManager = LinearLayoutManager(context)
 
-        //viewModel.getSearchMoviesList()
-
         viewModel.getSearchMoviesListLiveData().observe(viewLifecycleOwner) {
             movieAdapter.moviesList = viewModel.getSearchMoviesListLiveData().value!!
             movieAdapter.updateData()

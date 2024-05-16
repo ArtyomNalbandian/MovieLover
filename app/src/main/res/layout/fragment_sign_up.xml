@@ -55,6 +55,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginRight="16dp"
+        android:inputType="textPassword"
         android:hint="Пароль"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"

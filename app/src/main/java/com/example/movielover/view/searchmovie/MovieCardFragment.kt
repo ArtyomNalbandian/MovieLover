@@ -1,6 +1,7 @@
 package com.example.movielover.view.searchmovie
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,8 +49,23 @@ class MovieCardFragment : Fragment() {
         }
 
         mBinding.addToMyFavouriteBtn.setOnClickListener {
-            viewModel.addToMyFavouriteList(currentMovie)
-            Toast.makeText(context, "Фильм успешно добавлен", Toast.LENGTH_SHORT).show()
+            if (mBinding.addToMyFavouriteBtn.text == "Добавить") {
+                viewModel.addToMyFavouriteList(currentMovie)
+                mBinding.addToMyFavouriteBtn.text = "Удалить"
+                Toast.makeText(context, "Фильм успешно добавлен", Toast.LENGTH_SHORT).show()
+            } else {
+                viewModel.deleteMovieFromFavourite(currentMovie)
+                mBinding.addToMyFavouriteBtn.text = "Добавить"
+                Toast.makeText(context, "Фильм успешно удален", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        for (movies in viewModel.getMyFavouriteMoviesList()) {
+            if (movies.id == currentMovie.id) {
+                mBinding.addToMyFavouriteBtn.text = "Удалить"
+            } else {
+                Log.d("testLog", "else --- ${movies.id == currentMovie.id}")
+            }
         }
     }
 

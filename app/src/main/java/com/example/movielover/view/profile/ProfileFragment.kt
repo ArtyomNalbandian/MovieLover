@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.movielover.R
 import com.example.movielover.databinding.FragmentProfileBinding
 import com.example.movielover.viewModel.SearchViewModel
 import com.squareup.picasso.Picasso
@@ -41,20 +42,12 @@ class ProfileFragment : Fragment() {
 
         if (currentUser.profileImage != "") {
             Picasso.get().load(currentUser.profileImage).into(mBinding.profileImage)
+        } else {
+            mBinding.profileImage.setImageResource(R.drawable.ic_person)
         }
 
-//        currentUser = viewModel.getUserInfo()
-//        Log.d("testLog", "user - ${viewModel.getUserInfo()}")
-
-        viewModel.downloadProfileFavouriteMovies(currentUser)
-        movieAdapter.moviesList = viewModel.getMyFavouriteMoviesList()
+        movieAdapter.moviesList = viewModel.getFavouriteMoviesList()
         movieAdapter.updateData()
-        viewModel.getMyFavouriteMoviesLiveData().observe(viewLifecycleOwner) {
-            movieAdapter.moviesList = viewModel.getMyFavouriteMoviesLiveData().value!!
-            movieAdapter.updateData()
-        }
-
-//        viewModel.getMySubscriptions()
 
         var mySubsList = viewModel.getMySubsList()
 
@@ -62,12 +55,9 @@ class ProfileFragment : Fragment() {
             mySubsList = it
         }
 
-
         for (users in mySubsList) {
             if (users.uid == currentUser.uid) {
                 mBinding.subscribeBtn.text = "Отписаться"
-            } else {
-                Log.d("testLog", "else --- ${users.uid == currentUser.uid}")
             }
         }
 
@@ -78,11 +68,8 @@ class ProfileFragment : Fragment() {
             } else {
                 viewModel.unsubscribeFromUser(currentUser)
                 Toast.makeText(context, "Вы отписались!", Toast.LENGTH_SHORT).show()
-
             }
         }
-
-        //viewModel.downloadUserInfo(currentUser)
 
         return mBinding.root
     }

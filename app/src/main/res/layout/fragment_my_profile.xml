@@ -22,26 +22,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/profileImage"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/ic_person"
+        android:background="@drawable/ic_person"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_name_profile" />
+        app:layout_constraintTop_toBottomOf="@+id/user_name_profile"/>
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/profileSearchView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="16dp"
-        android:background="@drawable/searchview_background"
-        app:iconifiedByDefault="false"
-        app:layout_constraintTop_toBottomOf="@+id/profileImage"
-        app:queryHint="Введите название фильма" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/profileTabs"
@@ -51,7 +41,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profileSearchView"
+        app:layout_constraintTop_toBottomOf="@id/profileImage"
         app:tabMode="fixed">
 
         <com.google.android.material.tabs.TabItem
@@ -73,7 +63,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/profileTabs"
-        android:paddingBottom="356dp"/>
+        android:paddingBottom="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileTabs" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

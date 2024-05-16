@@ -2,6 +2,7 @@ package com.example.movielover.view.authorization
 
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,7 +48,7 @@ class SignInFragment : Fragment() {
                 Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
             }
             else {
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(mBinding.loginSignInET.text.toString(), mBinding.passwordSignInED.text.toString())
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(mBinding.loginSignInET.text.toString().trim(), mBinding.passwordSignInED.text.toString().trim())
                     .addOnCompleteListener() { task ->
                         if (task.isSuccessful) {
                             findNavController().navigate(R.id.action_signInFragment_to_mainFragment)
@@ -66,6 +67,8 @@ class SignInFragment : Fragment() {
         }
 
         mBinding.signInAsGuestBtn.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            Log.d("testLog", "current user after logout is --- ${FirebaseAuth.getInstance()}")
             findNavController().navigate(R.id.action_signInFragment_to_mainFragment)
         }
 
@@ -73,6 +76,5 @@ class SignInFragment : Fragment() {
             findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
         }
     }
-
 
 }
