@@ -23,42 +23,87 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/loginSignInET"
-        android:layout_width="0dp"
+<!--    <EditText-->
+<!--        android:id="@+id/loginSignInET"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="16dp"-->
+<!--        android:layout_marginTop="32dp"-->
+<!--        android:layout_marginRight="16dp"-->
+<!--        android:hint="Почта"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/textView" />-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/showPassword"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@drawable/ic_show"-->
+<!--        android:layout_margin="16dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/passwordSignInED"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/passwordSignInED"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/passwordSignInED" />-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/passwordSignInED"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="16dp"-->
+<!--        android:layout_marginTop="32dp"-->
+<!--        android:layout_marginRight="16dp"-->
+<!--        android:inputType="textPassword"-->
+<!--        android:hint="Пароль"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/loginSignInET" />-->
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/loginSignIn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginRight="16dp"
         android:hint="Почта"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView" />
-
-    <ImageView
-        android:id="@+id/showPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_show"
         android:layout_margin="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/passwordSignInED"
-        app:layout_constraintEnd_toEndOf="@+id/passwordSignInED"
-        app:layout_constraintTop_toTopOf="@+id/passwordSignInED" />
-
-    <EditText
-        android:id="@+id/passwordSignInED"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginRight="16dp"
-        android:inputType="textPassword"
-        android:hint="Пароль"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:boxCornerRadiusBottomEnd="20dp"
+        app:boxCornerRadiusBottomStart="20dp"
+        app:boxCornerRadiusTopEnd="20dp"
+        app:boxCornerRadiusTopStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/loginSignInET" />
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/loginSignInET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textEmailAddress" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordSignIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Пароль"
+        android:layout_margin="16dp"
+        app:passwordToggleEnabled="true"
+        app:boxCornerRadiusBottomEnd="20dp"
+        app:boxCornerRadiusBottomStart="20dp"
+        app:boxCornerRadiusTopEnd="20dp"
+        app:boxCornerRadiusTopStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginSignIn">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordSignInET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 
     <com.google.android.material.button.MaterialButton
@@ -74,7 +119,7 @@
         app:cornerRadius="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordSignInED" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordSignIn" />
 
 
     <TextView
@@ -88,20 +133,5 @@
         android:text="Нет аккаунта? Зарегистрироваться"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signInBtn" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/signInAsGuestBtn"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#EDEDED"
-        android:text="Войти как гость"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:cornerRadius="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInTV" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

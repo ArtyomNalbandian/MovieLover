@@ -54,11 +54,6 @@ class SearchFragment : Fragment() {
             mBinding.recyclerView.adapter = userAdapter
         }
 
-        if (currentUser.email == null) {
-            mBinding.searchTabs.visibility = View.GONE
-            mBinding.recyclerView.setPadding(0, 0, 0, 200)
-        }
-
         mBinding.searchTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(p0: TabLayout.Tab?) {
                 when (p0?.position) {

@@ -36,7 +36,7 @@ class ProfileUsersAdapter (
         holder.onBind(currentItem)
         holder.mBinding.movieCardLayout.setOnClickListener {
             viewModel.setUserInfoFragment(usersList[position])
-            fragment.findNavController().navigate(R.id.action_searchFragment_to_profileFragment)
+            fragment.findNavController().navigate(R.id.action_myProfileFragment_to_profileFragment2)
         }
     }
 

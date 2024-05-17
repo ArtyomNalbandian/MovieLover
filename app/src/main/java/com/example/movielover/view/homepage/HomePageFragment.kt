@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movielover.databinding.FragmentHomePageBinding
-import com.example.movielover.view.profile.ProfileMoviesAdapter
+import com.example.movielover.view.profile.MyProfileMoviesAdapter
 import com.example.movielover.viewModel.SearchViewModel
 
 class HomePageFragment : Fragment() {
@@ -26,7 +26,7 @@ class HomePageFragment : Fragment() {
     private lateinit var scrollLayout: ScrollView
     private val PREF_SCROLL_POSITION = "scroll_position"
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var profileMoviesAdapter: ProfileMoviesAdapter
+    private lateinit var profileMoviesAdapter: MyProfileMoviesAdapter
     private lateinit var criminalMoviesAdapter: HomePageAdapter
     private lateinit var thrillerMoviesAdapter: HomePageAdapter
     private lateinit var actionMoviesAdapter: HomePageAdapter
@@ -149,12 +149,12 @@ class HomePageFragment : Fragment() {
             }, 1700)
         }
 
-        profileMoviesAdapter = ProfileMoviesAdapter(this, viewModel)
-        viewModel.downloadFavouriteMovies()
+//        profileMoviesAdapter = MyProfileMoviesAdapter(this, viewModel)
+//        viewModel.downloadFavouriteMovies()
 
-        viewModel.downloadMyUserInfo()
+//        viewModel.downloadMyUserInfo()
         viewModel.downloadAllUsers()
-        profileMoviesAdapter.updateData()
+//        profileMoviesAdapter.updateData()
         sharedPreferences = requireActivity().getSharedPreferences("scroll_prefs", Context.MODE_PRIVATE)
 
     }

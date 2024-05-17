@@ -17,10 +17,10 @@ import com.example.movielover.model.dataclasses.Doc
 import com.example.movielover.viewModel.SearchViewModel
 import com.squareup.picasso.Picasso
 
-class ProfileMoviesAdapter (
+class MyProfileMoviesAdapter(
     private val fragment: Fragment,
     private val viewModel: SearchViewModel
-) : RecyclerView.Adapter<ProfileMoviesAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<MyProfileMoviesAdapter.ViewHolder>() {
 
     var moviesList = ArrayList<Doc>()
 
@@ -37,6 +37,13 @@ class ProfileMoviesAdapter (
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = moviesList[position]
         holder.onBind(currentItem)
+        holder.mBinding.deleteBtn.setOnClickListener {
+            viewModel.deleteMovieFromFavourite(currentItem)
+            moviesList.removeAt(position)
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position, moviesList.size)
+            Toast.makeText(fragment.requireContext(), "Фильм успешно удален", Toast.LENGTH_SHORT).show()
+        }
         holder.mBinding.movieCardLayout.setOnClickListener {
             viewModel.setMoreDocPostAboutFragment(moviesList[position])
             Log.d("testLog", "this is adapter --- ${viewModel.getMoreDocPostAboutFragment()}")
@@ -68,7 +75,7 @@ class ProfileMoviesAdapter (
             year.text = doc.year.toString()
             Picasso.get().load(doc.poster?.url).into(moviePoster)
 
-            deleteBtn.visibility = View.GONE
+            deleteBtn.visibility = View.VISIBLE
         }
     }
 }

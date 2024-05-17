@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,13 +14,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.movielover.R
 import com.example.movielover.databinding.FragmentMyProfileBinding
 import com.example.movielover.viewModel.SearchViewModel
 import com.google.android.material.tabs.TabLayout
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 
 class MyProfileFragment : Fragment() {
@@ -30,13 +25,10 @@ class MyProfileFragment : Fragment() {
     private val mBinding get() = _binding!!
 
     private val viewModel: SearchViewModel by activityViewModels<SearchViewModel>()
-    private lateinit var moviesAdapter: ProfileMoviesAdapter
+    private lateinit var moviesAdapter: MyProfileMoviesAdapter
     private lateinit var usersAdapter: ProfileUsersAdapter
 
-    /////////////////////////////
     private var filePath: Uri? = null
-    private lateinit var user: User
-    ///////////////////////////
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,14 +36,17 @@ class MyProfileFragment : Fragment() {
     ): View {
         _binding = FragmentMyProfileBinding.inflate(inflater, container, false)
 
-        moviesAdapter = ProfileMoviesAdapter(this, viewModel)
+        moviesAdapter = MyProfileMoviesAdapter(this, viewModel)
         usersAdapter = ProfileUsersAdapter(this, viewModel)
         mBinding.profileRecyclerView.layoutManager = LinearLayoutManager(context)
         mBinding.profileRecyclerView.adapter = moviesAdapter
 
+//        viewModel.downloadFavouriteMovies()
 
-        moviesAdapter.moviesList = viewModel.getMyFavouriteMoviesList()
-        moviesAdapter.updateData()
+//        moviesAdapter.moviesList = viewModel.getMyFavouriteMoviesList()
+//        moviesAdapter.updateData()
+//        usersAdapter.usersList = viewModel.getMySubsList()
+//        usersAdapter.updateData()
 
         viewModel.getMyFavouriteMoviesLiveData().observe(viewLifecycleOwner) {
             moviesAdapter.moviesList = viewModel.getMyFavouriteMoviesLiveData().value!!
@@ -63,25 +58,34 @@ class MyProfileFragment : Fragment() {
             usersAdapter.updateData()
         }
 
-        usersAdapter.usersList = viewModel.getMySubsList()
-        usersAdapter.updateData()
-
         viewModel.downloadMyUserInfo()
-        user = viewModel.getMyUserInfo()
 
-        if (user.email == null) {
-            mBinding.profileTabs.visibility = View.GONE
-            mBinding.profileRecyclerView.setPadding(0, 0, 0, 800)
+        viewModel.getMyUserDataLive().observe(viewLifecycleOwner) {
+            it.let {
+                mBinding.userNameProfile.text = it.login
+                if (it.profileImage?.isNotEmpty() == true) {
+                    Picasso.get().load(it.profileImage).into(mBinding.profileImage)
+                }
+            }
+        }
+
+        mBinding.profileTabs.getTabAt(viewModel.getProfileTabPosition())!!.select()
+        if (viewModel.getProfileTabPosition() == 0) {
+            mBinding.profileRecyclerView.adapter = moviesAdapter
+        } else {
+            mBinding.profileRecyclerView.adapter = usersAdapter
         }
 
         mBinding.profileTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(p0: TabLayout.Tab?) {
                 when (p0?.position) {
                     0 -> {
+                        viewModel.setProfileTabPosition(0)
                         mBinding.profileRecyclerView.adapter = moviesAdapter
                     }
 
                     1 -> {
+                        viewModel.setProfileTabPosition(1)
                         mBinding.profileRecyclerView.adapter = usersAdapter
                     }
                 }
@@ -89,11 +93,6 @@ class MyProfileFragment : Fragment() {
             override fun onTabUnselected(p0: TabLayout.Tab?) {}
             override fun onTabReselected(p0: TabLayout.Tab?) {}
         })
-
-        mBinding.userNameProfile.text = user.login
-        if (user.profileImage != "") {
-            Picasso.get().load(user.profileImage).into(mBinding.profileImage)
-        }
 
         return mBinding.root
     }

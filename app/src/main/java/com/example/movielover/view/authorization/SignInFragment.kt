@@ -2,6 +2,8 @@ package com.example.movielover.view.authorization
 
 import android.os.Bundle
 import android.text.InputType
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -27,15 +29,16 @@ class SignInFragment : Fragment() {
     ): View {
         _binding = FragmentSignInBinding.inflate(inflater, container, false)
 
-        /////////////////////////////////////////////////
-        viewModel.getMoviesByGenre("криминал")   //
-        viewModel.getMoviesByGenre("триллер")    // перенести на splash экран
-        viewModel.getMoviesByGenre("боевик")     //
-        viewModel.getMoviesByGenre("мелодрама")  //
-        viewModel.getMoviesByGenre("драма")      //
-        viewModel.getMoviesByGenre("фантастика") //
-        viewModel.getAnimeSeriesCartoon()              //
+        viewModel.getMoviesByGenre("криминал")
+        viewModel.getMoviesByGenre("триллер")
+        viewModel.getMoviesByGenre("боевик")
+        viewModel.getMoviesByGenre("мелодрама")
+        viewModel.getMoviesByGenre("драма")
+        viewModel.getMoviesByGenre("фантастика")
+        viewModel.getAnimeSeriesCartoon()
 
+//        viewModel.downloadMyUserInfo()
+        viewModel.downloadFavouriteMovies()
         viewModel.getMySubscriptions()
 
         return mBinding.root
@@ -44,32 +47,12 @@ class SignInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mBinding.signInBtn.setOnClickListener {
-            if(mBinding.loginSignInET.text.toString().isEmpty() || mBinding.passwordSignInED.text.toString().isEmpty()) {
-                Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
-            }
-            else {
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(mBinding.loginSignInET.text.toString().trim(), mBinding.passwordSignInED.text.toString().trim())
-                    .addOnCompleteListener() { task ->
-                        if (task.isSuccessful) {
-                            findNavController().navigate(R.id.action_signInFragment_to_mainFragment)
-                        }
-                    }
-            }
-        }
-
-        mBinding.showPassword.setOnClickListener {
-            if (mBinding.passwordSignInED.inputType == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
-                mBinding.passwordSignInED.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            if (mBinding.loginSignInET.text.toString().isEmpty() || mBinding.passwordSignInET.text.toString().isEmpty()) {
+                Toast.makeText(context, "Заполните все поля!", Toast.LENGTH_SHORT).show()
             } else {
-                mBinding.passwordSignInED.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                Log.d("testLog", "else scope --- ${mBinding.loginSignInET.text.toString()} - ${mBinding.passwordSignInET.text.toString()}")
+                loginUser()
             }
-            mBinding.passwordSignInED.setSelection(mBinding.passwordSignInED.text.length)
-        }
-
-        mBinding.signInAsGuestBtn.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            Log.d("testLog", "current user after logout is --- ${FirebaseAuth.getInstance()}")
-            findNavController().navigate(R.id.action_signInFragment_to_mainFragment)
         }
 
         mBinding.signInTV.setOnClickListener {
@@ -77,4 +60,20 @@ class SignInFragment : Fragment() {
         }
     }
 
+//    override fun onStart() {
+//        super.onStart()
+//        if (FirebaseAuth.getInstance().currentUser != null) {
+//            findNavController().navigate(R.id.action_signInFragment_to_mainFragment)
+//        }
+//    }
+
+    private fun loginUser() {
+        val login = mBinding.loginSignInET.text.toString()
+        val password = mBinding.passwordSignInET.text.toString()
+
+        viewModel.loginUser(login, password, onSuccess = {
+            Log.d("testLog", "successed signIn")
+            findNavController().navigate(R.id.action_signInFragment_to_mainFragment)
+        })
+    }
 }

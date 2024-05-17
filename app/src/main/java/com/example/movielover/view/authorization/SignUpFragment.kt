@@ -2,6 +2,7 @@ package com.example.movielover.view.authorization
 
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.movielover.R
 import com.example.movielover.databinding.FragmentSignUpBinding
 import com.example.movielover.viewModel.SearchViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 class SignUpFragment : Fragment() {
 
@@ -35,29 +37,33 @@ class SignUpFragment : Fragment() {
             if (isFieldsEmpty()) {
                 Toast.makeText(context, "Заполните все поля!", Toast.LENGTH_SHORT).show()
             } else {
-                viewModel.createAccount(
-                    mBinding.emailSignUpET,
-                    mBinding.passwordSignUpET,
-                    mBinding.loginSignUpET)
-                Toast.makeText(context, "Пользователь успешно зарегистрирован", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
+                createAccount()
             }
-        }
-
-        mBinding.showPassword.setOnClickListener {
-            if (mBinding.passwordSignUpET.inputType == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
-                mBinding.passwordSignUpET.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            } else {
-                mBinding.passwordSignUpET.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            }
-            mBinding.passwordSignUpET.setSelection(mBinding.passwordSignUpET.text.length)
         }
     }
 
     private fun isFieldsEmpty(): Boolean {
-        return mBinding.loginSignUpET.text.toString().isEmpty() ||
-                mBinding.passwordSignUpET.text.toString().isEmpty() ||
-                mBinding.emailSignUpET.text.toString().isEmpty()
+        return mBinding.emailSignUpET.text.toString().isEmpty() ||
+                mBinding.loginSignUpET.text.toString().isEmpty() ||
+                mBinding.passwordSignUpET.text.toString().isEmpty()
+    }
+
+    private fun createAccount() {
+        val email = mBinding.emailSignUpET.text.toString().trim()
+        val login = mBinding.loginSignUpET.text.toString().trim()
+        val password = mBinding.passwordSignUpET.text.toString().trim()
+
+        viewModel.createAccount(email, password, login,
+            onSuccess = {
+                Log.d("testLog", "onSuccessSignUp")
+                Toast.makeText(context, "Аккаунт создан!", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
+            },
+            onError = {
+                Log.d("testLog", "onErrorSignUp")
+                Toast.makeText(context, "Ошибка", Toast.LENGTH_SHORT).show()
+            })
+        FirebaseAuth.getInstance().signOut()
     }
 
 }

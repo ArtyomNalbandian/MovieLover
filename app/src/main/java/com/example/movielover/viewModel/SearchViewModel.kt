@@ -45,6 +45,15 @@ class SearchViewModel : ViewModel() {
         }
     }
 
+    private var profileTabPosition = 0
+    fun setProfileTabPosition(newTabPosition: Int) {
+        profileTabPosition = newTabPosition
+    }
+
+    fun getProfileTabPosition(): Int {
+        return profileTabPosition
+    }
+
     fun getTabPosition(): Int {
         return tabPosition
     }
@@ -125,8 +134,16 @@ class SearchViewModel : ViewModel() {
         repository.downloadFavouriteMovies()
     }
 
-    fun createAccount(email: EditText, password: EditText, login: EditText) {
-        repository.createAccount(email, password, login)
+//    fun createAccount(email: EditText, password: EditText, login: EditText) {
+//        repository.createAccount(email, password, login)
+//    }
+
+    fun createAccount(email: String, password: String, login: String, onSuccess: () -> Unit, onError: () -> Unit) {
+        repository.createAccount(email, password, login, onSuccess, onError)
+    }
+
+    fun loginUser(email: String, password: String, onSuccess: () -> Unit) {
+        repository.loginUser(email, password, onSuccess)
     }
 
     fun getFavouriteMoviesList(): ArrayList<Doc> {
@@ -143,6 +160,14 @@ class SearchViewModel : ViewModel() {
 
     fun getMyFavouriteMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
         return repository.getMyFavouriteMoviesLiveData()
+    }
+
+//    fun getFavouriteMoviesLiveData(): MutableLiveData<ArrayList<Doc>> {
+//        return repository.getFavouriteMoviesListLiveData()
+//    }
+
+    fun getProfileFavouriteMoviesListLive(): MutableLiveData<ArrayList<Doc>> {
+        return repository.getProfileFavouriteMoviesListLive()
     }
 
     fun getMoviesByGenre(genre: String) {
@@ -231,9 +256,13 @@ class SearchViewModel : ViewModel() {
         repository.getMySubscriptions()
     }
 
+    fun getProfileSubscriptions(user: User): ArrayList<User> {
+        return repository.getProfileSubscriptions(user)
+    }
     fun getMySubsList(): ArrayList<User> {
         return repository.getMySubsList()
     }
+
 
     fun getMySubsListLiveData(): MutableLiveData<ArrayList<User>> {
         return repository.getMySubsListLiveData()
@@ -249,5 +278,13 @@ class SearchViewModel : ViewModel() {
 
     fun uploadImage(filePath: Uri?) {
         repository.uploadImage(filePath)
+    }
+
+    fun getMyUserDataLive(): MutableLiveData<User> {
+        return repository.getMyUserDataLive()
+    }
+
+    fun getUserDataLive(): MutableLiveData<User> {
+        return repository.getUserDataLive()
     }
 }
