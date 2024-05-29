@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -61,6 +62,7 @@ class MyProfileFragment : Fragment() {
         viewModel.downloadMyUserInfo()
 
         viewModel.getMyUserDataLive().observe(viewLifecycleOwner) {
+            Log.d("testLog", "myUserLiveData --- ${it.login}")
             it.let {
                 mBinding.userNameProfile.text = it.login
                 if (it.profileImage?.isNotEmpty() == true) {

@@ -68,6 +68,12 @@ class HomePageAdapter (
                 } else {
                     Picasso.get().load(doc.poster.url).into(moviePoster)
                 }
+            } else if (doc.backdrop != null) {
+                if (doc.backdrop.url != null) {
+                    Picasso.get().load(doc.backdrop.url).into(moviePoster)
+                } else {
+                    Picasso.get().load(doc.backdrop.previewUrl).into(moviePoster)
+                }
             }
         }
 

@@ -38,8 +38,8 @@ class SignInFragment : Fragment() {
         viewModel.getAnimeSeriesCartoon()
 
 //        viewModel.downloadMyUserInfo()
-        viewModel.downloadFavouriteMovies()
-        viewModel.getMySubscriptions()
+//        viewModel.downloadFavouriteMovies()
+//        viewModel.getMySubscriptions()
 
         return mBinding.root
     }

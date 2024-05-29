@@ -196,7 +196,7 @@ class Repository {
         val client = OkHttpClient()
 
         val request = Request.Builder()
-            .url("https://api.kinopoisk.dev/v1.4/movie?page=1&limit=50&genres.name=$genre")
+            .url("https://api.kinopoisk.dev/v1.4/movie?page=1&limit=200&genres.name=$genre")
             .get()
             .addHeader("accept", "application/json")
             .addHeader("X-API-KEY", "X57R8H6-WVK4RP3-M01YV79-TYKPE7B")
@@ -211,13 +211,31 @@ class Repository {
                 val responseBody = response.body()?.string()
                 val gson = Gson()
                 val movieList = gson.fromJson(responseBody, MovieToSearch::class.java)
+                val arrayOfMovies: ArrayList<Doc> = ArrayList()
+                for (doc in movieList.docs!!) {
+                    if (doc.poster != null) {
+                        arrayOfMovies.add(doc)
+                    }
+                }
                 when (genre) {
-                    "криминал"  -> criminalMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
-                    "триллер"   -> thrillerMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
-                    "боевик"    -> actionMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
-                    "мелодрама" -> melodramaMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
-                    "драма"     -> dramaMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
-                    "фантастика"-> fantasticMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
+                    "криминал" -> criminalMoviesByGenreLiveData.postValue(arrayOfMovies)
+                    "триллер" -> thrillerMoviesByGenreLiveData.postValue(arrayOfMovies)
+                    "боевик" -> actionMoviesByGenreLiveData.postValue(arrayOfMovies)
+                    "мелодрама" -> melodramaMoviesByGenreLiveData.postValue(arrayOfMovies)
+                    "драма" -> dramaMoviesByGenreLiveData.postValue(arrayOfMovies)
+                    "фантастика" -> fantasticMoviesByGenreLiveData.postValue(arrayOfMovies)
+//                    "криминал"  -> criminalMoviesByGenreLiveData.postValue(movieList.docs as ArrayList<Doc>?)
+////                    "криминал"  -> criminalMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
+//                    "триллер"   -> thrillerMoviesByGenreLiveData.postValue(movieList.docs as ArrayList<Doc>?)
+////                    "триллер"   -> thrillerMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
+//                    "боевик"    -> actionMoviesByGenreLiveData.postValue(movieList.docs as ArrayList<Doc>?)
+////                    "боевик"    -> actionMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
+//                    "мелодрама" -> melodramaMoviesByGenreLiveData.postValue(movieList.docs as ArrayList<Doc>?)
+////                    "мелодрама" -> melodramaMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
+//                    "драма"     -> dramaMoviesByGenreLiveData.postValue(movieList.docs as ArrayList<Doc>?)
+////                    "драма"     -> dramaMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
+//                    "фантастика"-> fantasticMoviesByGenreLiveData.postValue(movieList.docs as ArrayList<Doc>?)
+////                    "фантастика"-> fantasticMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
                 }
             }
         })
@@ -269,7 +287,8 @@ class Repository {
                 val responseBody = response.body()?.string()
                 val gson = Gson()
                 val movieList = gson.fromJson(responseBody, MovieToSearch::class.java)
-                cartoonMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
+//                cartoonMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
+                cartoonMoviesByGenreLiveData.postValue(movieList.docs as ArrayList<Doc>?)
             }
         })
 
@@ -386,6 +405,23 @@ class Repository {
     }
 
     private var userInfo = User("")
+//    fun downloadUserInfo(user: User) {
+//        database.child("Users").child(user.uid.toString()).get().addOnSuccessListener {
+//            val userInfo = it.getValue(User::class.java)
+//            Log.d("testLog", "fragmentUserInfo --- $userInfo")
+//            if (userInfo != null) {
+//                if (userInfo.profileImage == null) {
+//                    userInfo.profileImage = "https://firebasestorage.googleapis.com/v0/b/movieloverapp-c5f6a.appspot.com/o/images%2F%D0%BF%D1%83%D1%81%D1%82%D0%B0%D1%8F%D0%90%D0%B2%D0%B0.png?alt=media&token=fd89ecb2-60ba-4dff-8aa4-68dd81413d2c"
+//                }
+////                userInfo = userInfo
+//                userDataLiveData.postValue(myUserInfo)
+//            } else {
+//                Log.d("testLog", "User data is null")
+//            }
+//        }.addOnFailureListener {
+//            Log.d("testLog", "Failed to fetch user info", it)
+//        }
+//    }
     fun downloadUserInfo(user: User) {
         database.child("Users").child("${user.uid}").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -394,7 +430,7 @@ class Repository {
                 if (profileImage == "") {
                     profileImage = "https://firebasestorage.googleapis.com/v0/b/movieloverapp-c5f6a.appspot.com/o/images%2F%D0%BF%D1%83%D1%81%D1%82%D0%B0%D1%8F%D0%90%D0%B2%D0%B0.png?alt=media&token=fd89ecb2-60ba-4dff-8aa4-68dd81413d2c"
                 }
-                userDataLiveData.postValue(User(login, "", "", profileImage))
+                userDataLiveData.postValue(User("", login, profileImage))
             }
 
             override fun onCancelled(error: DatabaseError) {}

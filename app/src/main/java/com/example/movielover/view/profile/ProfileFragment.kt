@@ -63,6 +63,8 @@ class ProfileFragment : Fragment() {
 //        movieAdapter.moviesList = viewModel.getFavouriteMoviesList()
 //        movieAdapter.updateData()
 
+        viewModel.downloadUserInfo(currentUser)
+
         viewModel.getUserDataLive().observe(viewLifecycleOwner) {
             it.let {
                 mBinding.userNameProfile.text = it.login
@@ -71,7 +73,6 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
-        viewModel.downloadUserInfo(currentUser)
 
         var mySubsList = viewModel.getMySubsList()
 
