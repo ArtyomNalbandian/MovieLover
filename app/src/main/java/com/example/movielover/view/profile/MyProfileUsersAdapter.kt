@@ -14,10 +14,10 @@ import com.example.movielover.databinding.CardViewDesignBinding
 import com.example.movielover.viewModel.SearchViewModel
 import com.squareup.picasso.Picasso
 
-class ProfileUsersAdapter (
+class MyProfileUsersAdapter (
     private val fragment: Fragment,
     private val viewModel: SearchViewModel
-) : RecyclerView.Adapter<ProfileUsersAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<MyProfileUsersAdapter.ViewHolder>() {
 
     var usersList = ArrayList<User>()
 
@@ -36,7 +36,7 @@ class ProfileUsersAdapter (
         holder.onBind(currentItem)
         holder.mBinding.movieCardLayout.setOnClickListener {
             viewModel.setUserInfoFragment(usersList[position])
-            fragment.findNavController().navigate(R.id.action_profileFragment2_self)
+            fragment.findNavController().navigate(R.id.action_myProfileFragment_to_profileFragment2)
         }
     }
 

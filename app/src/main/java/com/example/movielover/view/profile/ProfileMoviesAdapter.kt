@@ -40,7 +40,7 @@ class ProfileMoviesAdapter (
         holder.mBinding.movieCardLayout.setOnClickListener {
             viewModel.setMoreDocPostAboutFragment(moviesList[position])
             Log.d("testLog", "this is adapter --- ${viewModel.getMoreDocPostAboutFragment()}")
-            fragment.findNavController().navigate(R.id.action_myProfileFragment_to_movieCardFragment3)
+            fragment.findNavController().navigate(R.id.action_profileFragment2_to_movieCardFragment3)
         }
     }
 

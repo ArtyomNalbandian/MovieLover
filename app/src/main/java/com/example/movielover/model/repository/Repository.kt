@@ -174,7 +174,7 @@ class Repository {
             .url("https://api.kinopoisk.dev/v1.4/movie/search?page=1&limit=10&query=$nameOfMovieToSearch")
             .get()
             .addHeader("accept", "application/json")
-            .addHeader("X-API-KEY", "JHWCY0W-Z8N47AE-JK5S5TK-ZJE2W2E")
+            .addHeader("X-API-KEY", "9WBCW0P-4284VRY-GQMAP77-H0PJGFM")
             .build()
 
         client.newCall(request).enqueue(object : okhttp3.Callback {
@@ -196,10 +196,10 @@ class Repository {
         val client = OkHttpClient()
 
         val request = Request.Builder()
-            .url("https://api.kinopoisk.dev/v1.4/movie?page=1&limit=200&genres.name=$genre")
+            .url("https://api.kinopoisk.dev/v1.4/movie?page=1&limit=20&genres.name=$genre")
             .get()
             .addHeader("accept", "application/json")
-            .addHeader("X-API-KEY", "X57R8H6-WVK4RP3-M01YV79-TYKPE7B")
+            .addHeader("X-API-KEY", "JHWCY0W-Z8N47AE-JK5S5TK-ZJE2W2E")
             .build()
 
         client.newCall(request).enqueue(object : okhttp3.Callback {
@@ -213,17 +213,17 @@ class Repository {
                 val movieList = gson.fromJson(responseBody, MovieToSearch::class.java)
                 val arrayOfMovies: ArrayList<Doc> = ArrayList()
                 for (doc in movieList.docs!!) {
-                    if (doc.poster != null) {
+                    if (doc.poster != null && doc.backdrop!!.previewUrl != null) {
                         arrayOfMovies.add(doc)
                     }
                 }
                 when (genre) {
-                    "криминал" -> criminalMoviesByGenreLiveData.postValue(arrayOfMovies)
-                    "триллер" -> thrillerMoviesByGenreLiveData.postValue(arrayOfMovies)
-                    "боевик" -> actionMoviesByGenreLiveData.postValue(arrayOfMovies)
-                    "мелодрама" -> melodramaMoviesByGenreLiveData.postValue(arrayOfMovies)
-                    "драма" -> dramaMoviesByGenreLiveData.postValue(arrayOfMovies)
-                    "фантастика" -> fantasticMoviesByGenreLiveData.postValue(arrayOfMovies)
+                    "криминал" -> criminalMoviesByGenreLiveData.postValue(arrayOfMovies.shuffled() as ArrayList<Doc>?)
+                    "триллер" -> thrillerMoviesByGenreLiveData.postValue(arrayOfMovies.shuffled() as ArrayList<Doc>?)
+                    "боевик" -> actionMoviesByGenreLiveData.postValue(arrayOfMovies.shuffled() as ArrayList<Doc>?)
+                    "мелодрама" -> melodramaMoviesByGenreLiveData.postValue(arrayOfMovies.shuffled() as ArrayList<Doc>?)
+                    "драма" -> dramaMoviesByGenreLiveData.postValue(arrayOfMovies.shuffled() as ArrayList<Doc>?)
+                    "фантастика" -> fantasticMoviesByGenreLiveData.postValue(arrayOfMovies.shuffled() as ArrayList<Doc>?)
 //                    "криминал"  -> criminalMoviesByGenreLiveData.postValue(movieList.docs as ArrayList<Doc>?)
 ////                    "криминал"  -> criminalMoviesByGenreLiveData.postValue(movieList.docs?.shuffled() as ArrayList<Doc>?)
 //                    "триллер"   -> thrillerMoviesByGenreLiveData.postValue(movieList.docs as ArrayList<Doc>?)

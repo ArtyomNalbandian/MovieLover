@@ -26,5 +26,12 @@
         android:id="@+id/profileFragment2"
         android:name="com.example.movielover.view.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment2_self"
+            app:destination="@id/profileFragment2" />
+        <action
+            android:id="@+id/action_profileFragment2_to_movieCardFragment3"
+            app:destination="@id/movieCardFragment3" />
+    </fragment>
 </navigation>

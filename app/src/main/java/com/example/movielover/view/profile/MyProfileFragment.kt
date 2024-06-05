@@ -27,7 +27,7 @@ class MyProfileFragment : Fragment() {
 
     private val viewModel: SearchViewModel by activityViewModels<SearchViewModel>()
     private lateinit var moviesAdapter: MyProfileMoviesAdapter
-    private lateinit var usersAdapter: ProfileUsersAdapter
+    private lateinit var usersAdapter: MyProfileUsersAdapter
 
     private var filePath: Uri? = null
 
@@ -38,7 +38,8 @@ class MyProfileFragment : Fragment() {
         _binding = FragmentMyProfileBinding.inflate(inflater, container, false)
 
         moviesAdapter = MyProfileMoviesAdapter(this, viewModel)
-        usersAdapter = ProfileUsersAdapter(this, viewModel)
+        usersAdapter = MyProfileUsersAdapter(this, viewModel)
+//        usersAdapter = ProfileUsersAdapter(this, viewModel)
         mBinding.profileRecyclerView.layoutManager = LinearLayoutManager(context)
         mBinding.profileRecyclerView.adapter = moviesAdapter
 
